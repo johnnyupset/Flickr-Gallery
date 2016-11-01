@@ -34,7 +34,7 @@ public class HeadlinesFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Notify the parent layout of selected item
-        ((PaneEventsListener) getActivity().findViewById(R.id.layout_content)).onArticleSelected(position);
+        ((NewsLayout) getActivity().findViewById(R.id.news_layout_container)).onArticleSelected(position);
         // Keep the selected item checked also after click
         getListView().setItemChecked(position, true);
     }

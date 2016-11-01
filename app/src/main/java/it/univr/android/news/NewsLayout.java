@@ -1,5 +1,5 @@
 package it.univr.android.news;
 
-interface PaneEventsListener {
+public interface NewsLayout {
     void onArticleSelected(int position);
 }
