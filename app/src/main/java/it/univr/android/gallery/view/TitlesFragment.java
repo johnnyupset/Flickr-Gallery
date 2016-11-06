@@ -22,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import it.univr.android.gallery.R;
+import it.univr.android.gallery.controller.FlickrFetcher;
 import it.univr.android.gallery.model.Pictures;
 
 public class TitlesFragment extends ListFragment {
@@ -29,9 +30,7 @@ public class TitlesFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Create an array adapter for the list view, using the Pictures titles array
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, Pictures.titles));
+        onModelChanged();
     }
 
     @Override
@@ -40,5 +39,14 @@ public class TitlesFragment extends ListFragment {
         ((GalleryLayout) getActivity().findViewById(R.id.gallery_layout_container)).onTitleSelected(position);
         // Keep the selected item checked also after click
         getListView().setItemChecked(position, true);
+    }
+
+    public void onModelChanged() {
+        // Create an array adapter for the list view, using the Pictures titles array
+        String[] titles = Pictures.getTitles();
+        if (titles != null)
+            setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
+        else
+            FlickrFetcher.fetchLastTitles(30);
     }
 }

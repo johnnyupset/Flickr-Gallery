@@ -1,6 +1,7 @@
 package it.univr.android.gallery.view;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ListFragment;
 import android.content.Context;
@@ -9,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import it.univr.android.gallery.R;
+import it.univr.android.gallery.model.Pictures;
 
 public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout {
 
@@ -19,9 +21,17 @@ public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+        Pictures.registerView(this);
+
         // Make the clicked item remain visually highlighted
         ((ListFragment) getFragmentManager().findFragmentById(R.id.titles_fragment))
             .getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        Pictures.unregisterView(this);
+        super.onDetachedFromWindow();
     }
 
     @Override
@@ -29,6 +39,13 @@ public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout
         // Capture the picture fragment from the activity layout
         ((PictureFragment) getFragmentManager().findFragmentById(R.id.picture_fragment))
             .updateArticle(position);
+    }
+
+    @Override
+    public void onModelChanged() {
+        // We delegate to the titles fragment, always
+        ((TitlesFragment) getFragmentManager().findFragmentById(R.id.titles_fragment))
+             .onModelChanged();
     }
 
     public TwoPanesGalleryLayout(Context context) {

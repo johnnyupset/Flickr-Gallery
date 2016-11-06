@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import it.univr.android.gallery.R;
+import it.univr.android.gallery.model.Pictures;
 
 public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayout {
 
@@ -17,11 +18,19 @@ public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayou
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
+
+        Pictures.registerView(this);
         FragmentManager fragmentManager = getFragmentManager();
         // Show the titles fragment at start
         if (fragmentManager.findFragmentById(R.id.gallery_layout_container) == null)
             fragmentManager.beginTransaction()
                     .add(R.id.gallery_layout_container, new TitlesFragment()).commit();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        Pictures.unregisterView(this);
+        super.onDetachedFromWindow();
     }
 
     @Override
@@ -34,6 +43,10 @@ public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayou
             .addToBackStack(null)
             // Commit the transaction
             .commit();
+    }
+
+    @Override
+    public void onModelChanged() {
     }
 
     public SinglePaneGalleryLayout(Context context) {

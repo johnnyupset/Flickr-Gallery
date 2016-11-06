@@ -78,7 +78,7 @@ public class PictureFragment extends Fragment {
             try
             {
                 // Get input stream
-                InputStream image = getActivity().getAssets().open(Pictures.fileNames[position]);
+                InputStream image = getActivity().getAssets().open(Pictures.getFilenameFor(position));
                 // Load image as Drawable
                 Drawable d = Drawable.createFromStream(image, null);
                 // Set image to ImageView
