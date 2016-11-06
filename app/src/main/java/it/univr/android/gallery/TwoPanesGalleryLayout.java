@@ -1,4 +1,4 @@
-package it.univr.android.news;
+package it.univr.android.gallery;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -8,7 +8,7 @@ import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
-public class TwoPanesNewsLayout extends LinearLayout implements NewsLayout {
+public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout {
 
     private FragmentManager getFragmentManager() {
         return ((Activity) getContext()).getFragmentManager();
@@ -18,21 +18,21 @@ public class TwoPanesNewsLayout extends LinearLayout implements NewsLayout {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         // Make the clicked item remain visually highlighted
-        ((ListFragment) getFragmentManager().findFragmentById(R.id.headlines_fragment))
+        ((ListFragment) getFragmentManager().findFragmentById(R.id.titles_fragment))
             .getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
     @Override
-    public void onArticleSelected(int position) {
-        // Capture the article fragment from the activity layout
-        ((ArticleFragment) getFragmentManager().findFragmentById(R.id.article_fragment))
+    public void onTitleSelected(int position) {
+        // Capture the picture fragment from the activity layout
+        ((PictureFragment) getFragmentManager().findFragmentById(R.id.picture_fragment))
             .updateArticle(position);
     }
 
-    public TwoPanesNewsLayout(Context context) {
+    public TwoPanesGalleryLayout(Context context) {
         super(context);
     }
-    public TwoPanesNewsLayout(Context context, AttributeSet attrs) {
+    public TwoPanesGalleryLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 }

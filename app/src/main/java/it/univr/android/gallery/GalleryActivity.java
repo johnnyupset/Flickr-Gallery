@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.univr.android.news;
+package it.univr.android.gallery;
 
 import android.app.Activity;
 import android.os.Bundle;
 
-public class NewsActivity extends Activity {
+public class GalleryActivity extends Activity {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news);
+        setContentView(R.layout.activity_gallery);
     }
 }

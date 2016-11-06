@@ -13,16 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.univr.android.news;
+package it.univr.android.gallery;
 
 import android.app.Fragment;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
-public class ArticleFragment extends Fragment {
+import java.io.IOException;
+import java.io.InputStream;
+
+public class PictureFragment extends Fragment {
     private final static String ARG_POSITION = "position";
 
     /**
@@ -31,12 +35,12 @@ public class ArticleFragment extends Fragment {
      * configuration change. We ensure that args exist. If they
      * already existed, previous args will be kept by the OS.
      */
-    public ArticleFragment() {
+    public PictureFragment() {
         init(-1);
     }
 
-    public static ArticleFragment mkInstance(int position) {
-        ArticleFragment fragment = new ArticleFragment();
+    public static PictureFragment mkInstance(int position) {
+        PictureFragment fragment = new PictureFragment();
         fragment.init(position);
 
         return fragment;
@@ -50,7 +54,7 @@ public class ArticleFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.article_view, container, false);
+        return inflater.inflate(R.layout.picture_view, container, false);
     }
 
     @Override
@@ -68,6 +72,15 @@ public class ArticleFragment extends Fragment {
         Bundle args = getArguments();
         int position = args.getInt(ARG_POSITION);
         if (position >= 0)
-            ((TextView) getView()).setText(Ipsum.Articles[position]);
+            try
+            {
+                // Get input stream
+                InputStream image = getActivity().getAssets().open(Ipsum.fileNames[position]);
+                // Load image as Drawable
+                Drawable d = Drawable.createFromStream(image, null);
+                // Set image to ImageView
+                ((ImageView) getView()).setImageDrawable(d);
+            }
+            catch(IOException ex) {}
     }
 }

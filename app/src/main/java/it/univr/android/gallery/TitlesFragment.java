@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.univr.android.news;
+package it.univr.android.gallery;
 
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -21,20 +21,20 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-public class HeadlinesFragment extends ListFragment {
+public class TitlesFragment extends ListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create an array adapter for the list view, using the Ipsum headlines array
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, Ipsum.Headlines));
+        // Create an array adapter for the list view, using the Ipsum titles array
+        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, Ipsum.titles));
     }
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Notify the parent layout of selected item
-        ((NewsLayout) getActivity().findViewById(R.id.news_layout_container)).onArticleSelected(position);
+        ((GalleryLayout) getActivity().findViewById(R.id.gallery_layout_container)).onTitleSelected(position);
         // Keep the selected item checked also after click
         getListView().setItemChecked(position, true);
     }
