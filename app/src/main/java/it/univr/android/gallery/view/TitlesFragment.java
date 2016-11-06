@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.univr.android.gallery;
+package it.univr.android.gallery.view;
 
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -21,14 +21,17 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import it.univr.android.gallery.R;
+import it.univr.android.gallery.model.Pictures;
+
 public class TitlesFragment extends ListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Create an array adapter for the list view, using the Ipsum titles array
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, Ipsum.titles));
+        // Create an array adapter for the list view, using the Pictures titles array
+        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, Pictures.titles));
     }
 
     @Override

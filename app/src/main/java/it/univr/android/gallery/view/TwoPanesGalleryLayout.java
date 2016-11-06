@@ -1,4 +1,4 @@
-package it.univr.android.gallery;
+package it.univr.android.gallery.view;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -7,6 +7,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+
+import it.univr.android.gallery.R;
 
 public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout {
 

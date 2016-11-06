@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.univr.android.gallery;
+package it.univr.android.gallery.view;
 
 import android.app.Fragment;
 import android.graphics.drawable.Drawable;
@@ -25,6 +25,9 @@ import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import it.univr.android.gallery.R;
+import it.univr.android.gallery.model.Pictures;
 
 public class PictureFragment extends Fragment {
     private final static String ARG_POSITION = "position";
@@ -75,7 +78,7 @@ public class PictureFragment extends Fragment {
             try
             {
                 // Get input stream
-                InputStream image = getActivity().getAssets().open(Ipsum.fileNames[position]);
+                InputStream image = getActivity().getAssets().open(Pictures.fileNames[position]);
                 // Load image as Drawable
                 Drawable d = Drawable.createFromStream(image, null);
                 // Set image to ImageView

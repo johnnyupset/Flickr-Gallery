@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<it.univr.android.gallery.SinglePaneGalleryLayout
+<it.univr.android.gallery.view.SinglePaneGalleryLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/gallery_layout_container"
     android:layout_width="match_parent"

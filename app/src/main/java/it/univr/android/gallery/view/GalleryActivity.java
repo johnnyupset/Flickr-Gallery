@@ -13,10 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package it.univr.android.gallery;
+package it.univr.android.gallery.view;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import it.univr.android.gallery.R;
 
 public class GalleryActivity extends Activity {
 

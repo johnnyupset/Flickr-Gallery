@@ -1,14 +1,14 @@
-package it.univr.android.gallery;
+package it.univr.android.gallery.model;
 
-public class Ipsum {
+public class Pictures {
 
-    static String[] titles = {
+    public static String[] titles = {
         "Il re della casa",
         "Si sveglia la notte",
         "Altissimo"
     };
 
-    static String[] fileNames = {
+    public static String[] fileNames = {
             "gatto-verde.jpg",
             "il-gufo-inclina-la-testa.jpg",
             "monte-bianco.jpg"

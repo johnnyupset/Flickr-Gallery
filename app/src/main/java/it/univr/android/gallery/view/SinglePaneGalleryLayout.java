@@ -1,10 +1,12 @@
-package it.univr.android.gallery;
+package it.univr.android.gallery.view;
 
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
+
+import it.univr.android.gallery.R;
 
 public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayout {
 
