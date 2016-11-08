@@ -22,10 +22,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import it.univr.android.gallery.R;
-import it.univr.android.gallery.controller.FlickrFetcher;
+import it.univr.android.gallery.controller.ListOfPicturesFetcher;
 import it.univr.android.gallery.model.Pictures;
 
 public class TitlesFragment extends ListFragment {
+    private String[] oldTitles;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,10 +44,14 @@ public class TitlesFragment extends ListFragment {
 
     public void onModelChanged() {
         // Create an array adapter for the list view, using the Pictures titles array
-        String[] titles = Pictures.getTitles();
-        if (titles != null)
-            setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
+        String[] titles = Pictures.get().getTitles();
+        if (titles != null) {
+            if (titles != oldTitles) {
+                setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
+                oldTitles = titles;
+            }
+        }
         else
-            FlickrFetcher.fetchLastTitles(30);
+            new ListOfPicturesFetcher(30);
     }
 }

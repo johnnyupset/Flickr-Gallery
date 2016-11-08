@@ -1,45 +1,78 @@
 package it.univr.android.gallery.model;
 
+import android.graphics.Bitmap;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import it.univr.android.gallery.view.GalleryLayout;
 
 public class Pictures {
+    private static Pictures pictures;
+    private String[] titles;
+    private String[] urls;
+    private Map<String, Bitmap> bitmaps = new HashMap<>();
 
-    private static Set<GalleryLayout> views = new HashSet<>();
+    public static synchronized Pictures get() {
+        if (pictures != null)
+            return pictures;
+        else
+            return pictures = new Pictures();
+    }
 
-    public static void registerView(GalleryLayout view) {
+    private Set<GalleryLayout> views = new HashSet<>();
+
+    public void registerView(GalleryLayout view) {
         views.add(view);
     }
 
-    public static void unregisterView(GalleryLayout view) {
+    public void unregisterView(GalleryLayout view) {
         views.remove(view);
     }
 
-    private static void notifyViews() {
+    private void notifyViews() {
         for (GalleryLayout view: views)
             view.onModelChanged();
     }
 
-    public static String[] getTitles() {
+    public String[] getTitles() {
         return titles;
     }
 
-    public static void setTitles(String[] titles) {
-        Pictures.titles = titles;
+    public Bitmap getBitmap(int position) {
+        if (urls == null || position < 0 || position >= urls.length)
+            return null;
+        else
+            return bitmaps.get(urls[position]);
+    }
+
+    public String getUrl(int position) {
+        return urls != null && position >= 0 && position < urls.length ? urls[position] : null;
+    }
+
+    public void setPictures(Iterable<Picture> pictures) {
+        List<String> titles = new ArrayList<>();
+        List<String> urls = new ArrayList<>();
+
+        for (Picture picture: pictures) {
+            titles.add(picture.title);
+            urls.add(picture.url);
+        }
+
+        this.titles = titles.toArray(new String[titles.size()]);
+        this.urls = urls.toArray(new String[urls.size()]);
+        this.bitmaps.clear();
+
         notifyViews();
     }
 
-    private static String[] titles;
+    public void setBitmap(String url, Bitmap bitmap) {
+        this.bitmaps.put(url, bitmap);
 
-    public static String getFilenameFor(int num) {
-        return fileNames[num % fileNames.length];
+        notifyViews();
     }
-
-    private static String[] fileNames = {
-            "gatto-verde.jpg",
-            "il-gufo-inclina-la-testa.jpg",
-            "monte-bianco.jpg"
-    };
 }

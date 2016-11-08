@@ -1,32 +1,21 @@
-/*
- * Copyright (C) 2012 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package it.univr.android.gallery.view;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
 import java.io.IOException;
 import java.io.InputStream;
 
 import it.univr.android.gallery.R;
+import it.univr.android.gallery.controller.BitmapFetcher;
+import it.univr.android.gallery.controller.ListOfPicturesFetcher;
 import it.univr.android.gallery.model.Pictures;
 
 public class PictureFragment extends Fragment {
@@ -74,16 +63,19 @@ public class PictureFragment extends Fragment {
     private void reflectState() {
         Bundle args = getArguments();
         int position = args.getInt(ARG_POSITION);
-        if (position >= 0)
-            try
-            {
-                // Get input stream
-                InputStream image = getActivity().getAssets().open(Pictures.getFilenameFor(position));
-                // Load image as Drawable
-                Drawable d = Drawable.createFromStream(image, null);
-                // Set image to ImageView
-                ((ImageView) getView()).setImageDrawable(d);
+        if (position >= 0) {
+            Bitmap bitmap = Pictures.get().getBitmap(position);
+            if (bitmap != null)
+                ((ImageView) getView()).setImageBitmap(bitmap);
+            else {
+                String url = Pictures.get().getUrl(position);
+                if (url != null)
+                    new BitmapFetcher(url);
             }
-            catch(IOException ex) {}
+        }
+    }
+
+    public void onModelChanged() {
+        reflectState();
     }
 }
