@@ -2,20 +2,14 @@ package it.univr.android.gallery.view;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-
-import java.io.IOException;
-import java.io.InputStream;
 
 import it.univr.android.gallery.R;
 import it.univr.android.gallery.controller.BitmapFetcher;
-import it.univr.android.gallery.controller.ListOfPicturesFetcher;
 import it.univr.android.gallery.model.Pictures;
 
 public class PictureFragment extends Fragment {
@@ -52,15 +46,15 @@ public class PictureFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        reflectState();
+        reflectModel();
     }
 
     public void updateArticle(int position) {
         getArguments().putInt(ARG_POSITION, position);
-        reflectState();
+        reflectModel();
     }
 
-    private void reflectState() {
+    private void reflectModel() {
         Bundle args = getArguments();
         int position = args.getInt(ARG_POSITION);
         if (position >= 0) {
@@ -75,7 +69,10 @@ public class PictureFragment extends Fragment {
         }
     }
 
-    public void onModelChanged() {
-        reflectState();
+    public void onModelChanged(Pictures.Event event) {
+        switch (event) {
+            case BITMAP_CHANGED: reflectModel(); break;
+            case PICTURES_LIST_CHANGED: ((ImageView) getView()).setImageBitmap(null);
+        }
     }
 }

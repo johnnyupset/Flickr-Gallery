@@ -17,6 +17,11 @@ public class Pictures {
     private String[] urls;
     private Map<String, Bitmap> bitmaps = new HashMap<>();
 
+    public static enum Event {
+        PICTURES_LIST_CHANGED,
+        BITMAP_CHANGED
+    };
+
     public static synchronized Pictures get() {
         if (pictures != null)
             return pictures;
@@ -34,9 +39,9 @@ public class Pictures {
         views.remove(view);
     }
 
-    private void notifyViews() {
+    private void notifyViews(Event event) {
         for (GalleryLayout view: views)
-            view.onModelChanged();
+            view.onModelChanged(event);
     }
 
     public String[] getTitles() {
@@ -67,12 +72,12 @@ public class Pictures {
         this.urls = urls.toArray(new String[urls.size()]);
         this.bitmaps.clear();
 
-        notifyViews();
+        notifyViews(Event.PICTURES_LIST_CHANGED);
     }
 
     public void setBitmap(String url, Bitmap bitmap) {
         this.bitmaps.put(url, bitmap);
 
-        notifyViews();
+        notifyViews(Event.BITMAP_CHANGED);
     }
 }

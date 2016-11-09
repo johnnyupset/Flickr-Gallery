@@ -17,4 +17,5 @@ limitations under the License.
 
 <resources>
     <string name="app_name">Picture Gallery</string>
+    <string name="load_action">Load Latest</string>
 </resources>

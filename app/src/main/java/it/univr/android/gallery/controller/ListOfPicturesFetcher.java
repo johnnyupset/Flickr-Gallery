@@ -105,10 +105,9 @@ public class ListOfPicturesFetcher {
 
         for (int eventType = parser.next(); eventType != XmlPullParser.END_DOCUMENT; eventType = parser.next())
             if (eventType == XmlPullParser.START_TAG && "photo".equals(parser.getName())) {
-                String id = parser.getAttributeValue(null, "id");
                 String caption = parser.getAttributeValue(null, "title");
                 String url = parser.getAttributeValue(null, "url_z");
-                if (url == null) // The picture might be missing at this size
+                if (caption == null || caption.isEmpty() || url == null) // The picture might be missing or not have this size
                     continue;
 
                 if (caption.length() > MAX_TITLE_LENGTH)

@@ -41,10 +41,10 @@ public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout
     }
 
     @Override
-    public void onModelChanged() {
+    public void onModelChanged(Pictures.Event event) {
         // We delegate to the titles and picture fragments, always
-        ((TitlesFragment) getFragmentManager().findFragmentById(R.id.titles_fragment)).onModelChanged();
-        ((PictureFragment) getFragmentManager().findFragmentById(R.id.picture_fragment)).onModelChanged();
+        ((TitlesFragment) getFragmentManager().findFragmentById(R.id.titles_fragment)).onModelChanged(event);
+        ((PictureFragment) getFragmentManager().findFragmentById(R.id.picture_fragment)).onModelChanged(event);
     }
 
     public TwoPanesGalleryLayout(Context context) {

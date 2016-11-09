@@ -10,8 +10,6 @@ import android.widget.FrameLayout;
 import it.univr.android.gallery.R;
 import it.univr.android.gallery.model.Pictures;
 
-import static android.R.attr.fragment;
-
 public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayout {
 
     private FragmentManager getFragmentManager() {
@@ -49,13 +47,13 @@ public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayou
     }
 
     @Override
-    public void onModelChanged() {
+    public void onModelChanged(Pictures.Event event) {
         // We delegate to the currently shown fragment
         Fragment fragment = getFragmentManager().findFragmentById(R.id.gallery_layout_container);
         if (fragment instanceof TitlesFragment)
-            ((TitlesFragment) fragment).onModelChanged();
+            ((TitlesFragment) fragment).onModelChanged(event);
         else
-            ((PictureFragment) fragment).onModelChanged();
+            ((PictureFragment) fragment).onModelChanged(event);
     }
 
     public SinglePaneGalleryLayout(Context context) {

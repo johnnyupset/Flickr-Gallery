@@ -17,6 +17,9 @@ package it.univr.android.gallery.view;
 
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -26,12 +29,25 @@ import it.univr.android.gallery.controller.ListOfPicturesFetcher;
 import it.univr.android.gallery.model.Pictures;
 
 public class TitlesFragment extends ListFragment {
-    private String[] oldTitles;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        onModelChanged();
+        this.setHasOptionsMenu(true);
+        onModelChanged(Pictures.Event.PICTURES_LIST_CHANGED);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_titles, menu);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getListAdapter() != null)
+            setListShown(true);
     }
 
     @Override
@@ -42,16 +58,26 @@ public class TitlesFragment extends ListFragment {
         getListView().setItemChecked(position, true);
     }
 
-    public void onModelChanged() {
-        // Create an array adapter for the list view, using the Pictures titles array
-        String[] titles = Pictures.get().getTitles();
-        if (titles != null) {
-            if (titles != oldTitles) {
-                setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
-                oldTitles = titles;
-            }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.menu_item_load) {
+            setListShown(false);
+            setListAdapter(null);
+            new ListOfPicturesFetcher(30);
+            return true;
         }
         else
-            new ListOfPicturesFetcher(30);
+            return super.onOptionsItemSelected(item);
+    }
+
+    public void onModelChanged(Pictures.Event event) {
+        if (event == Pictures.Event.PICTURES_LIST_CHANGED) {
+            // Create an array adapter for the list view, using the Pictures titles array
+            String[] titles = Pictures.get().getTitles();
+            if (titles != null)
+                setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
+            else
+                new ListOfPicturesFetcher(30);
+        }
     }
 }
