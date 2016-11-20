@@ -25,7 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import it.univr.android.gallery.R;
-import it.univr.android.gallery.controller.ListOfPicturesFetcher;
+import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 
 public class TitlesFragment extends ListFragment {
@@ -63,7 +63,7 @@ public class TitlesFragment extends ListFragment {
         if (item.getItemId() == R.id.menu_item_load) {
             setListShown(false);
             setListAdapter(null);
-            new ListOfPicturesFetcher(30);
+            Controller.get().fetchListOfPictures();
             return true;
         }
         else
@@ -75,9 +75,9 @@ public class TitlesFragment extends ListFragment {
             // Create an array adapter for the list view, using the Pictures titles array
             String[] titles = Pictures.get().getTitles();
             if (titles != null)
-                setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
+                setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
             else
-                new ListOfPicturesFetcher(30);
+                Controller.get().fetchListOfPictures();
         }
     }
 }

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import it.univr.android.gallery.R;
-import it.univr.android.gallery.controller.BitmapFetcher;
+import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 
 public class PictureFragment extends Fragment {
@@ -61,11 +61,8 @@ public class PictureFragment extends Fragment {
             Bitmap bitmap = Pictures.get().getBitmap(position);
             if (bitmap != null)
                 ((ImageView) getView()).setImageBitmap(bitmap);
-            else {
-                String url = Pictures.get().getUrl(position);
-                if (url != null)
-                    new BitmapFetcher(url);
-            }
+            else
+                Controller.get().fetchPicture(position);
         }
     }
 

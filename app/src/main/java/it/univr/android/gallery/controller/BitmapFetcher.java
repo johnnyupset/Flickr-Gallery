@@ -13,10 +13,10 @@ import java.net.URL;
 
 import it.univr.android.gallery.model.Pictures;
 
-public class BitmapFetcher {
+class BitmapFetcher {
     private final static String TAG = BitmapFetcher.class.getSimpleName();
 
-    public BitmapFetcher(final String url) {
+    BitmapFetcher(final String url) {
         AsyncTask<Void, Void, Bitmap> itemsFetcher = new AsyncTask<Void, Void, Bitmap>() {
 
             @Override

@@ -22,6 +22,8 @@ public class Pictures {
         BITMAP_CHANGED
     };
 
+    private Pictures() {}
+
     public static synchronized Pictures get() {
         if (pictures != null)
             return pictures;

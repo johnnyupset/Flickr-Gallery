@@ -21,13 +21,13 @@ import java.util.List;
 import it.univr.android.gallery.model.Pictures;
 import it.univr.android.gallery.model.Picture;
 
-public class ListOfPicturesFetcher {
+class ListOfPicturesFetcher {
     private final static String TAG = ListOfPicturesFetcher.class.getSimpleName();
     private final static String ENDPOINT = "https://api.flickr.com/services/rest/";
     private final static String API_KEY = "388f5641e6dc1ecac49678a156f375df";
     private final static int MAX_TITLE_LENGTH = 40;
 
-    public ListOfPicturesFetcher(final int howMany) {
+    ListOfPicturesFetcher(final int howMany) {
         AsyncTask<Void, Void, List<Picture>> itemsFetcher = new AsyncTask<Void, Void, List<Picture>>() {
 
             @Override
