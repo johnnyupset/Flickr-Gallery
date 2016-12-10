@@ -27,21 +27,8 @@ class ListOfPicturesFetcher {
     private final static String API_KEY = "388f5641e6dc1ecac49678a156f375df";
     private final static int MAX_TITLE_LENGTH = 40;
 
-    ListOfPicturesFetcher(final int howMany) {
-        AsyncTask<Void, Void, List<Picture>> itemsFetcher = new AsyncTask<Void, Void, List<Picture>>() {
-
-            @Override
-            protected List<Picture> doInBackground(Void... params) {
-                return fetchItems(howMany);
-            }
-
-            @Override
-            protected void onPostExecute(List<Picture> pictures) {
-                Pictures.get().setPictures(pictures);
-            }
-        };
-
-        itemsFetcher.execute();
+    ListOfPicturesFetcher(int howMany) {
+        Pictures.get().setPictures(fetchItems(howMany));
     }
 
     private byte[] getUrlBytes(String urlSpec) throws IOException {

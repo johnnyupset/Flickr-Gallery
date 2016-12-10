@@ -62,7 +62,7 @@ public class PictureFragment extends Fragment {
             if (bitmap != null)
                 ((ImageView) getView()).setImageBitmap(bitmap);
             else
-                Controller.get().fetchPicture(position);
+                Controller.fetchPicture(getActivity(), position);
         }
     }
 

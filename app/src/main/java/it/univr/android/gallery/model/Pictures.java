@@ -1,6 +1,9 @@
 package it.univr.android.gallery.model;
 
+import android.app.Application;
 import android.graphics.Bitmap;
+import android.os.Looper;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,9 +44,18 @@ public class Pictures {
         views.remove(view);
     }
 
-    private void notifyViews(Event event) {
-        for (GalleryLayout view: views)
-            view.onModelChanged(event);
+    private void notifyViews(final Event event) {
+        // Notifies the views. This must be done in the UI thread,
+        // since views might have to redraw themselves
+        new Handler(Looper.getMainLooper()).post(
+            new Runnable() {
+                @Override
+                public void run() {
+                    for (GalleryLayout view: views)
+                        view.onModelChanged(event);
+                }
+            }
+        );
     }
 
     public String[] getTitles() {

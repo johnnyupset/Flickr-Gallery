@@ -1,29 +1,42 @@
 package it.univr.android.gallery.controller;
 
-import android.graphics.Bitmap;
-import android.widget.ImageView;
+import android.app.IntentService;
+import android.content.Context;
+import android.content.Intent;
 
-import it.univr.android.gallery.model.Pictures;
+public class Controller extends IntentService {
+    private final static String ACTION_FETCH_LIST_OF_PICTURES = "fetch list of pictures";
+    private final static String PARAM_HOW_MANY = "how many";
+    private final static String ACTION_FETCH_BITMAP = "fetch bitmap";
+    private final static String PARAM_POSITION = "position";
 
-public class Controller {
-    private static Controller controller;
-
-    private Controller() {}
-
-    public static synchronized Controller get() {
-        if (controller != null)
-            return controller;
-        else
-            return controller = new Controller();
+    public Controller() {
+        super("gallery controller");
     }
 
-    public void fetchListOfPictures() {
-        new ListOfPicturesFetcher(30);
+    public static void fetchListOfPictures(Context context, int howMany) {
+        Intent intent = new Intent(context, Controller.class);
+        intent.setAction(ACTION_FETCH_LIST_OF_PICTURES);
+        intent.putExtra(PARAM_HOW_MANY, howMany);
+        context.startService(intent);
     }
 
-    public void fetchPicture(int position) {
-        String url = Pictures.get().getUrl(position);
-        if (url != null)
-            new BitmapFetcher(url);
+    public static void fetchPicture(Context context, int position) {
+        Intent intent = new Intent(context, Controller.class);
+        intent.setAction(ACTION_FETCH_BITMAP);
+        intent.putExtra(PARAM_POSITION, position);
+        context.startService(intent);
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        switch (intent.getAction()) {
+            case ACTION_FETCH_LIST_OF_PICTURES:
+                new ListOfPicturesFetcher(intent.getIntExtra(PARAM_HOW_MANY, 40));
+                break;
+            case ACTION_FETCH_BITMAP:
+                new BitmapFetcher(intent.getIntExtra(PARAM_POSITION, -1));
+                break;
+        }
     }
 }

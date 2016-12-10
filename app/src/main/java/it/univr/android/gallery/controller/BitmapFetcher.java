@@ -16,30 +16,21 @@ import it.univr.android.gallery.model.Pictures;
 class BitmapFetcher {
     private final static String TAG = BitmapFetcher.class.getSimpleName();
 
-    BitmapFetcher(final String url) {
-        AsyncTask<Void, Void, Bitmap> itemsFetcher = new AsyncTask<Void, Void, Bitmap>() {
+    BitmapFetcher(int position) {
+        String url = Pictures.get().getUrl(position);
+        if (url == null)
+            return;
 
-            @Override
-            protected Bitmap doInBackground(Void... params) {
-                try {
-                    Log.d(TAG, "Loading image " + url);
-                    byte[] bitmapBytes = getUrlBytes(url);
-                    return BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-                }
-                catch (IOException e) {
-                    Log.e(TAG, "Error downloading image", e);
-                    return null;
-                }
-            }
-
-            @Override
-            protected void onPostExecute(Bitmap bitmap) {
-                if (bitmap != null)
-                    Pictures.get().setBitmap(url, bitmap);
-            }
-        };
-
-        itemsFetcher.execute();
+        try {
+            Log.d(TAG, "Loading image " + url);
+            byte[] bitmapBytes = getUrlBytes(url);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
+            if (bitmap != null)
+                Pictures.get().setBitmap(url, bitmap);
+        }
+        catch (IOException e) {
+            Log.e(TAG, "Error downloading image", e);
+        }
     }
 
     private byte[] getUrlBytes(String urlSpec) throws IOException {

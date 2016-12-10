@@ -35,6 +35,9 @@ limitations under the License.
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service
+            android:name=".controller.Controller"
+            android:exported="false"/>
     </application>
 
 </manifest>

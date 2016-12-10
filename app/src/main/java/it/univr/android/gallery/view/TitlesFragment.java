@@ -65,7 +65,7 @@ public class TitlesFragment extends ListFragment {
         if (item.getItemId() == R.id.menu_item_load) {
             setListShown(false);
             setListAdapter(null);
-            Controller.get().fetchListOfPictures();
+            Controller.fetchListOfPictures(getActivity(), 40);
             return true;
         }
         else
@@ -79,7 +79,7 @@ public class TitlesFragment extends ListFragment {
                 // Create an array adapter for the list view, using the Pictures titles array
                 setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
             else
-                Controller.get().fetchListOfPictures();
+                Controller.fetchListOfPictures(getActivity(), 40);
         }
     }
 }
