@@ -1,9 +1,6 @@
 package it.univr.android.gallery.view;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.ListFragment;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
@@ -39,7 +36,7 @@ public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout
 
     @Override
     public void onTitleSelected(int position) {
-        getPictureFragment().updateArticle(position);
+        getPictureFragment().updatePicture(position);
     }
 
     @Override

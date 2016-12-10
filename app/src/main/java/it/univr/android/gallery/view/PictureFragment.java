@@ -49,7 +49,7 @@ public class PictureFragment extends Fragment {
         reflectModel();
     }
 
-    public void updateArticle(int position) {
+    public void updatePicture(int position) {
         getArguments().putInt(ARG_POSITION, position);
         reflectModel();
     }

@@ -28,13 +28,15 @@ import it.univr.android.gallery.R;
 import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 
+import static it.univr.android.gallery.model.Pictures.Event.PICTURES_LIST_CHANGED;
+
 public class TitlesFragment extends ListFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
-        onModelChanged(Pictures.Event.PICTURES_LIST_CHANGED);
+        onModelChanged(PICTURES_LIST_CHANGED);
     }
 
     @Override
@@ -71,10 +73,10 @@ public class TitlesFragment extends ListFragment {
     }
 
     public void onModelChanged(Pictures.Event event) {
-        if (event == Pictures.Event.PICTURES_LIST_CHANGED) {
-            // Create an array adapter for the list view, using the Pictures titles array
+        if (event == PICTURES_LIST_CHANGED) {
             String[] titles = Pictures.get().getTitles();
             if (titles != null)
+                // Create an array adapter for the list view, using the Pictures titles array
                 setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
             else
                 Controller.get().fetchListOfPictures();
