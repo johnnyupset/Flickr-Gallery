@@ -15,7 +15,7 @@ import static android.R.attr.fragment;
 public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayout {
 
     private GalleryFragment getFragment() {
-        return (GalleryFragment) ((Activity) getContext()).getFragmentManager().findFragmentById(R.id.gallery_layout_container);
+        return (GalleryFragment) getFragmentManager().findFragmentById(R.id.gallery_layout_container);
     }
 
     private FragmentManager getFragmentManager() {
