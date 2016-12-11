@@ -36,9 +36,10 @@ class BitmapFetcher {
     private byte[] getUrlBytes(String urlSpec) throws IOException {
         URL url = new URL(urlSpec);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        ByteArrayOutputStream out = null;
 
         try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
+            out = new ByteArrayOutputStream();
             InputStream in = connection.getInputStream();
 
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
@@ -49,10 +50,12 @@ class BitmapFetcher {
             while ((bytesRead = in.read(buffer)) > 0)
                 out.write(buffer, 0, bytesRead);
 
-            out.close();
             return out.toByteArray();
         }
         finally {
+            if (out != null)
+                out.close();
+
             connection.disconnect();
         }
     }

@@ -30,7 +30,7 @@ import it.univr.android.gallery.model.Pictures;
 
 import static it.univr.android.gallery.model.Pictures.Event.PICTURES_LIST_CHANGED;
 
-public class TitlesFragment extends ListFragment {
+public class TitlesFragment extends ListFragment implements GalleryFragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

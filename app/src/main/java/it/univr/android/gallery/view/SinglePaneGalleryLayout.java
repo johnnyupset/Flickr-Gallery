@@ -10,7 +10,13 @@ import android.widget.FrameLayout;
 import it.univr.android.gallery.R;
 import it.univr.android.gallery.model.Pictures;
 
+import static android.R.attr.fragment;
+
 public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayout {
+
+    private GalleryFragment getFragment() {
+        return (GalleryFragment) ((Activity) getContext()).getFragmentManager().findFragmentById(R.id.gallery_layout_container);
+    }
 
     private FragmentManager getFragmentManager() {
         return ((Activity) getContext()).getFragmentManager();
@@ -19,12 +25,11 @@ public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayou
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-
         Pictures.get().registerView(this);
-        FragmentManager fragmentManager = getFragmentManager();
+
         // Show the titles fragment at start
-        if (fragmentManager.findFragmentById(R.id.gallery_layout_container) == null)
-            fragmentManager.beginTransaction()
+        if (getFragment() == null)
+            getFragmentManager().beginTransaction()
                     .add(R.id.gallery_layout_container, new TitlesFragment()).commit();
     }
 
@@ -48,12 +53,7 @@ public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayou
 
     @Override
     public void onModelChanged(Pictures.Event event) {
-        // We delegate to the currently shown fragment
-        Fragment fragment = getFragmentManager().findFragmentById(R.id.gallery_layout_container);
-        if (fragment instanceof TitlesFragment)
-            ((TitlesFragment) fragment).onModelChanged(event);
-        else
-            ((PictureFragment) fragment).onModelChanged(event);
+        getFragment().onModelChanged(event);
     }
 
     public SinglePaneGalleryLayout(Context context) {

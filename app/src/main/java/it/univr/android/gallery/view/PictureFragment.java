@@ -12,7 +12,7 @@ import it.univr.android.gallery.R;
 import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 
-public class PictureFragment extends Fragment {
+public class PictureFragment extends Fragment implements GalleryFragment {
     private final static String ARG_POSITION = "position";
 
     /**
