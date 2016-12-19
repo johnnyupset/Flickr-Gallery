@@ -2,7 +2,6 @@ package it.univr.android.gallery.controller;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -17,20 +16,29 @@ class BitmapFetcher {
     private final static String TAG = BitmapFetcher.class.getSimpleName();
 
     BitmapFetcher(int position) {
-        String url = Pictures.get().getUrl(position);
-        if (url == null)
-            return;
+        Bitmap bitmap = null;
+        String url = null;
 
         try {
+            url = Pictures.get().getUrl(position);
+            if (url == null)
+                return;
+
             Log.d(TAG, "Loading image " + url);
             byte[] bitmapBytes = getUrlBytes(url);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
-            if (bitmap != null)
-                Pictures.get().setBitmap(url, bitmap);
+            bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);
         }
         catch (IOException e) {
             Log.e(TAG, "Error downloading image", e);
         }
+        finally {
+            synchronized (Controller.class) {
+                Controller.taskCounter--;
+            }
+        }
+
+        if (bitmap != null)
+            Pictures.get().setBitmap(url, bitmap);
     }
 
     private byte[] getUrlBytes(String urlSpec) throws IOException {

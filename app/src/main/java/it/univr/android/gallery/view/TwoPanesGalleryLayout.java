@@ -7,6 +7,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import it.univr.android.gallery.R;
+import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 
 public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout {
@@ -43,6 +44,8 @@ public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout
     public void onModelChanged(Pictures.Event event) {
         getTitlesFragment().onModelChanged(event);
         getPictureFragment().onModelChanged(event);
+        if (Controller.isIdle())
+            ((GalleryActivity) getContext()).hideProgressIndicator();
     }
 
     public TwoPanesGalleryLayout(Context context) {

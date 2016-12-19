@@ -9,6 +9,7 @@ public class Controller extends IntentService {
     private final static String PARAM_HOW_MANY = "how many";
     private final static String ACTION_FETCH_BITMAP = "fetch bitmap";
     private final static String PARAM_POSITION = "position";
+    static int taskCounter;
 
     public Controller() {
         super("gallery controller");
@@ -18,6 +19,9 @@ public class Controller extends IntentService {
         Intent intent = new Intent(context, Controller.class);
         intent.setAction(ACTION_FETCH_LIST_OF_PICTURES);
         intent.putExtra(PARAM_HOW_MANY, howMany);
+        synchronized (Controller.class) {
+            taskCounter++;
+        }
         context.startService(intent);
     }
 
@@ -25,7 +29,20 @@ public class Controller extends IntentService {
         Intent intent = new Intent(context, Controller.class);
         intent.setAction(ACTION_FETCH_BITMAP);
         intent.putExtra(PARAM_POSITION, position);
+        synchronized (Controller.class) {
+            taskCounter++;
+        }
         context.startService(intent);
+    }
+
+    public static synchronized boolean isIdle() {
+        return taskCounter == 0;
+    }
+
+    @Override
+    public void onDestroy() {
+        taskCounter = 0;
+        super.onDestroy();
     }
 
     @Override

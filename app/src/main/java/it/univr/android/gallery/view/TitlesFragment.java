@@ -32,10 +32,23 @@ import static it.univr.android.gallery.model.Pictures.Event.PICTURES_LIST_CHANGE
 
 public class TitlesFragment extends ListFragment implements GalleryFragment {
 
+    private GalleryLayout getGalleryLayout() {
+        return ((GalleryLayout) getActivity().findViewById(R.id.gallery_layout_container));
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (getListAdapter() == null)
+            setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, new String[0]));
+
         onModelChanged(PICTURES_LIST_CHANGED);
     }
 
@@ -46,16 +59,9 @@ public class TitlesFragment extends ListFragment implements GalleryFragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        if (getListAdapter() != null)
-            setListShown(true);
-    }
-
-    @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         // Notify the parent layout of selected item
-        ((GalleryLayout) getActivity().findViewById(R.id.gallery_layout_container)).onTitleSelected(position);
+        getGalleryLayout().onTitleSelected(position);
         // Keep the selected item checked also after click
         getListView().setItemChecked(position, true);
     }
@@ -63,8 +69,7 @@ public class TitlesFragment extends ListFragment implements GalleryFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_load) {
-            setListShown(false);
-            setListAdapter(null);
+            ((GalleryActivity) getActivity()).showProgressIndicator();
             Controller.fetchListOfPictures(getActivity(), 40);
             return true;
         }
@@ -78,8 +83,10 @@ public class TitlesFragment extends ListFragment implements GalleryFragment {
             if (titles != null)
                 // Create an array adapter for the list view, using the Pictures titles array
                 setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
-            else
+            else {
+                ((GalleryActivity) getActivity()).showProgressIndicator();
                 Controller.fetchListOfPictures(getActivity(), 40);
+            }
         }
     }
 }

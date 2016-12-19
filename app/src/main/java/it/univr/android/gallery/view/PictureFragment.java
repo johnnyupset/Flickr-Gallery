@@ -38,6 +38,10 @@ public class PictureFragment extends Fragment implements GalleryFragment {
         setArguments(args);
     }
 
+    private GalleryLayout getGalleryLayout() {
+        return ((GalleryLayout) getActivity().findViewById(R.id.gallery_layout_container));
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.picture_view, container, false);
@@ -61,15 +65,23 @@ public class PictureFragment extends Fragment implements GalleryFragment {
             Bitmap bitmap = Pictures.get().getBitmap(position);
             if (bitmap != null)
                 ((ImageView) getView()).setImageBitmap(bitmap);
-            else
+            else {
+                ((GalleryActivity) getActivity()).showProgressIndicator();
                 Controller.fetchPicture(getActivity(), position);
+            }
         }
     }
 
     public void onModelChanged(Pictures.Event event) {
         switch (event) {
-            case BITMAP_CHANGED: reflectModel(); break;
-            case PICTURES_LIST_CHANGED: ((ImageView) getView()).setImageBitmap(null);
+            case BITMAP_CHANGED: {
+                reflectModel();
+                break;
+            }
+            case PICTURES_LIST_CHANGED:
+                ((ImageView) getView()).setImageBitmap(null);
+                getArguments().putInt(ARG_POSITION, -1);
+                break;
         }
     }
 }

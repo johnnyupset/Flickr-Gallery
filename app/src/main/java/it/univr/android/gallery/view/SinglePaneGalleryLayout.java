@@ -1,16 +1,14 @@
 package it.univr.android.gallery.view;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
 import it.univr.android.gallery.R;
+import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
-
-import static android.R.attr.fragment;
 
 public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayout {
 
@@ -43,7 +41,7 @@ public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayou
     public void onTitleSelected(int position) {
         // Create fragment and give it an argument for the selected picture
         getFragmentManager().beginTransaction()
-            // Replace whatever is in the fragment_container view with this fragment
+            // Replace whatever is in the gallery_layout_container view with this fragment
             .replace(R.id.gallery_layout_container, PictureFragment.mkInstance(position))
             // Add the transaction to the back stack so the user can navigate back
             .addToBackStack(null)
@@ -54,6 +52,8 @@ public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayou
     @Override
     public void onModelChanged(Pictures.Event event) {
         getFragment().onModelChanged(event);
+        if (Controller.isIdle())
+            ((GalleryActivity) getContext()).hideProgressIndicator();
     }
 
     public SinglePaneGalleryLayout(Context context) {

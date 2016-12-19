@@ -1,7 +1,6 @@
 package it.univr.android.gallery.controller;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -18,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.univr.android.gallery.model.Pictures;
 import it.univr.android.gallery.model.Picture;
+import it.univr.android.gallery.model.Pictures;
 
 class ListOfPicturesFetcher {
     private final static String TAG = ListOfPicturesFetcher.class.getSimpleName();
@@ -28,7 +27,13 @@ class ListOfPicturesFetcher {
     private final static int MAX_TITLE_LENGTH = 40;
 
     ListOfPicturesFetcher(int howMany) {
-        Pictures.get().setPictures(fetchItems(howMany));
+        List<Picture> items = fetchItems(howMany);
+
+        synchronized (Controller.class) {
+            Controller.taskCounter--;
+        }
+
+        Pictures.get().setPictures(items);
     }
 
     private byte[] getUrlBytes(String urlSpec) throws IOException {
