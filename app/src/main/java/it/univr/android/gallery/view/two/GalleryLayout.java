@@ -1,16 +1,17 @@
-package it.univr.android.gallery.view;
+package it.univr.android.gallery.view.two;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import it.univr.android.gallery.R;
 import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
+import it.univr.android.gallery.view.GalleryActivity;
+import it.univr.android.gallery.view.single.TitlesFragment;
 
-public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout {
+public class GalleryLayout extends LinearLayout implements it.univr.android.gallery.view.GalleryLayout {
 
     private TitlesFragment getTitlesFragment() {
         return (TitlesFragment) ((Activity) getContext()).getFragmentManager().findFragmentById(R.id.titles_fragment);
@@ -24,9 +25,6 @@ public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         Pictures.get().registerView(this);
-
-        // Make the clicked item remain visually highlighted
-        getTitlesFragment().getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
     }
 
     @Override
@@ -48,10 +46,10 @@ public class TwoPanesGalleryLayout extends LinearLayout implements GalleryLayout
             ((GalleryActivity) getContext()).hideProgressIndicator();
     }
 
-    public TwoPanesGalleryLayout(Context context) {
+    public GalleryLayout(Context context) {
         super(context);
     }
-    public TwoPanesGalleryLayout(Context context, AttributeSet attrs) {
+    public GalleryLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 }

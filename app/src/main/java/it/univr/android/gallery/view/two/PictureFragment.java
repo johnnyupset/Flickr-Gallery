@@ -1,4 +1,4 @@
-package it.univr.android.gallery.view;
+package it.univr.android.gallery.view.two;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import it.univr.android.gallery.R;
 import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
+import it.univr.android.gallery.view.GalleryActivity;
+import it.univr.android.gallery.view.GalleryFragment;
 
 public class PictureFragment extends Fragment implements GalleryFragment {
     private final static String ARG_POSITION = "position";
@@ -32,14 +34,10 @@ public class PictureFragment extends Fragment implements GalleryFragment {
         return fragment;
     }
 
-    private void init(int position) {
+    protected void init(int position) {
         Bundle args = new Bundle();
         args.putInt(ARG_POSITION, position);
         setArguments(args);
-    }
-
-    private GalleryLayout getGalleryLayout() {
-        return ((GalleryLayout) getActivity().findViewById(R.id.gallery_layout_container));
     }
 
     @Override
@@ -61,15 +59,20 @@ public class PictureFragment extends Fragment implements GalleryFragment {
     private void reflectModel() {
         Bundle args = getArguments();
         int position = args.getInt(ARG_POSITION);
-        if (position >= 0) {
-            Bitmap bitmap = Pictures.get().getBitmap(position);
-            if (bitmap != null)
-                ((ImageView) getView()).setImageBitmap(bitmap);
-            else {
-                ((GalleryActivity) getActivity()).showProgressIndicator();
-                Controller.fetchPicture(getActivity(), position);
-            }
+        if (position >= 0 && !reflectPosition(position)) {
+            ((GalleryActivity) getActivity()).showProgressIndicator();
+            Controller.fetchPicture(getActivity(), position);
         }
+    }
+
+    protected boolean reflectPosition(int position) {
+        Bitmap bitmap = Pictures.get().getBitmap(position);
+        if (bitmap != null) {
+            ((ImageView) getView().findViewById(R.id.picture)).setImageBitmap(bitmap);
+            return true;
+        }
+        else
+            return false;
     }
 
     public void onModelChanged(Pictures.Event event) {
@@ -79,7 +82,7 @@ public class PictureFragment extends Fragment implements GalleryFragment {
                 break;
             }
             case PICTURES_LIST_CHANGED:
-                ((ImageView) getView()).setImageBitmap(null);
+                ((ImageView) getView().findViewById(R.id.picture)).setImageBitmap(null);
                 getArguments().putInt(ARG_POSITION, -1);
                 break;
         }

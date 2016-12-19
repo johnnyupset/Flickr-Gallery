@@ -1,4 +1,4 @@
-package it.univr.android.gallery.view;
+package it.univr.android.gallery.view.single;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -9,8 +9,10 @@ import android.widget.FrameLayout;
 import it.univr.android.gallery.R;
 import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
+import it.univr.android.gallery.view.GalleryActivity;
+import it.univr.android.gallery.view.GalleryFragment;
 
-public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayout {
+public class GalleryLayout extends FrameLayout implements it.univr.android.gallery.view.GalleryLayout {
 
     private GalleryFragment getFragment() {
         return (GalleryFragment) getFragmentManager().findFragmentById(R.id.gallery_layout_container);
@@ -56,10 +58,10 @@ public class SinglePaneGalleryLayout extends FrameLayout implements GalleryLayou
             ((GalleryActivity) getContext()).hideProgressIndicator();
     }
 
-    public SinglePaneGalleryLayout(Context context) {
+    public GalleryLayout(Context context) {
         super(context);
     }
-    public SinglePaneGalleryLayout(Context context, AttributeSet attrs) {
+    public GalleryLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 }
