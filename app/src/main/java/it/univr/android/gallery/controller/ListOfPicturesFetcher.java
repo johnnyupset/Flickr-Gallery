@@ -85,12 +85,8 @@ class ListOfPicturesFetcher {
             parser.setInput(new StringReader(xmlString));
             return parseItems(parser);
         }
-        catch (IOException e) {
+        catch (IOException | XmlPullParserException e) {
             Log.e(TAG, "Failed to fetch items", e);
-            return Collections.<Picture> emptyList();
-        }
-        catch (XmlPullParserException e) {
-            Log.e(TAG, "Failed to parse items", e);
             return Collections.<Picture> emptyList();
         }
     }

@@ -5,7 +5,7 @@ import android.widget.TextView;
 import it.univr.android.gallery.R;
 import it.univr.android.gallery.model.Pictures;
 
-public class PictureFragment extends it.univr.android.gallery.view.two.PictureFragment {
+public class PictureFragment extends it.univr.android.gallery.view.PictureFragment {
 
     public static PictureFragment mkInstance(int position) {
         PictureFragment fragment = new PictureFragment();

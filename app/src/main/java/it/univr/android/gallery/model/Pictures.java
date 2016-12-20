@@ -1,6 +1,5 @@
 package it.univr.android.gallery.model;
 
-import android.app.Application;
 import android.graphics.Bitmap;
 import android.os.Looper;
 import android.os.Handler;
@@ -20,7 +19,7 @@ public class Pictures {
     private String[] urls;
     private Map<String, Bitmap> bitmaps = new HashMap<>();
 
-    public static enum Event {
+    public enum Event {
         PICTURES_LIST_CHANGED,
         BITMAP_CHANGED
     };

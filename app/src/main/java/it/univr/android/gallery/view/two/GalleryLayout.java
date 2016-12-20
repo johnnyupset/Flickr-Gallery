@@ -9,7 +9,6 @@ import it.univr.android.gallery.R;
 import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 import it.univr.android.gallery.view.GalleryActivity;
-import it.univr.android.gallery.view.single.TitlesFragment;
 
 public class GalleryLayout extends LinearLayout implements it.univr.android.gallery.view.GalleryLayout {
 
