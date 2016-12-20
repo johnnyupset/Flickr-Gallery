@@ -5,8 +5,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
+import it.univr.android.gallery.MVC;
 import it.univr.android.gallery.R;
-import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 import it.univr.android.gallery.view.GalleryActivity;
 
@@ -23,12 +23,12 @@ public class GalleryLayout extends LinearLayout implements it.univr.android.gall
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Pictures.get().registerView(this);
+        MVC.registerView(this);
     }
 
     @Override
     protected void onDetachedFromWindow() {
-        Pictures.get().unregisterView(this);
+        MVC.unregisterView(this);
         super.onDetachedFromWindow();
     }
 
@@ -41,7 +41,7 @@ public class GalleryLayout extends LinearLayout implements it.univr.android.gall
     public void onModelChanged(Pictures.Event event) {
         getTitlesFragment().onModelChanged(event);
         getPictureFragment().onModelChanged(event);
-        if (Controller.isIdle())
+        if (MVC.controller.isIdle())
             ((GalleryActivity) getContext()).hideProgressIndicator();
     }
 

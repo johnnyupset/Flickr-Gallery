@@ -1,17 +1,13 @@
 package it.univr.android.gallery.model;
 
 import android.graphics.Bitmap;
-import android.os.Looper;
-import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import it.univr.android.gallery.view.GalleryLayout;
+import it.univr.android.gallery.MVC;
 
 public class Pictures {
     private static Pictures pictures;
@@ -23,39 +19,6 @@ public class Pictures {
         PICTURES_LIST_CHANGED,
         BITMAP_CHANGED
     };
-
-    private Pictures() {}
-
-    public static synchronized Pictures get() {
-        if (pictures != null)
-            return pictures;
-        else
-            return pictures = new Pictures();
-    }
-
-    private Set<GalleryLayout> views = new HashSet<>();
-
-    public void registerView(GalleryLayout view) {
-        views.add(view);
-    }
-
-    public void unregisterView(GalleryLayout view) {
-        views.remove(view);
-    }
-
-    private void notifyViews(final Event event) {
-        // Notifies the views. This must be done in the UI thread,
-        // since views might have to redraw themselves
-        new Handler(Looper.getMainLooper()).post(
-            new Runnable() {
-                @Override
-                public void run() {
-                    for (GalleryLayout view: views)
-                        view.onModelChanged(event);
-                }
-            }
-        );
-    }
 
     public String[] getTitles() {
         return titles;
@@ -85,12 +48,12 @@ public class Pictures {
         this.urls = urls.toArray(new String[urls.size()]);
         this.bitmaps.clear();
 
-        notifyViews(Event.PICTURES_LIST_CHANGED);
+        MVC.notifyViews(Event.PICTURES_LIST_CHANGED);
     }
 
     public void setBitmap(String url, Bitmap bitmap) {
         this.bitmaps.put(url, bitmap);
 
-        notifyViews(Event.BITMAP_CHANGED);
+        MVC.notifyViews(Event.BITMAP_CHANGED);
     }
 }

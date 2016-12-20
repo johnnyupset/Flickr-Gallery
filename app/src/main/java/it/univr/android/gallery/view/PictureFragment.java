@@ -3,14 +3,13 @@ package it.univr.android.gallery.view;
 import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import it.univr.android.gallery.MVC;
 import it.univr.android.gallery.R;
-import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 
 public abstract class PictureFragment extends Fragment implements GalleryFragment {
@@ -23,7 +22,6 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
      * already existed, previous args will be kept by the OS.
      */
     protected PictureFragment() {
-        Log.d(PictureFragment.class.getName(), "Created");
         init(-1);
     }
 
@@ -54,12 +52,12 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
         int position = args.getInt(ARG_POSITION);
         if (position >= 0 && !reflectPosition(position)) {
             ((GalleryActivity) getActivity()).showProgressIndicator();
-            Controller.fetchPicture(getActivity(), position);
+            MVC.controller.fetchPicture(getActivity(), position);
         }
     }
 
     protected boolean reflectPosition(int position) {
-        Bitmap bitmap = Pictures.get().getBitmap(position);
+        Bitmap bitmap = MVC.model.getBitmap(position);
         if (bitmap != null) {
             ((ImageView) getView().findViewById(R.id.picture)).setImageBitmap(bitmap);
             return true;

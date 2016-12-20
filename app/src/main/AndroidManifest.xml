@@ -36,7 +36,7 @@ limitations under the License.
             </intent-filter>
         </activity>
         <service
-            android:name=".controller.Controller"
+            android:name=".controller.ControllerService"
             android:exported="false"/>
     </application>
 

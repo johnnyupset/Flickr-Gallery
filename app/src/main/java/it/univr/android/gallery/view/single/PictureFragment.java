@@ -2,8 +2,8 @@ package it.univr.android.gallery.view.single;
 
 import android.widget.TextView;
 
+import it.univr.android.gallery.MVC;
 import it.univr.android.gallery.R;
-import it.univr.android.gallery.model.Pictures;
 
 public class PictureFragment extends it.univr.android.gallery.view.PictureFragment {
 
@@ -17,7 +17,7 @@ public class PictureFragment extends it.univr.android.gallery.view.PictureFragme
     protected boolean reflectPosition(int position) {
         boolean reflected = super.reflectPosition(position);
         if (reflected)
-            ((TextView) getView().findViewById(R.id.picture_title)).setText(Pictures.get().getTitles()[position]);
+            ((TextView) getView().findViewById(R.id.picture_title)).setText(MVC.model.getTitles()[position]);
 
         return reflected;
     }

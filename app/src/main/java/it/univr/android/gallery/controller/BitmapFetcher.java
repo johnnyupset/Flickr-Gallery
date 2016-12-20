@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import it.univr.android.gallery.model.Pictures;
+import it.univr.android.gallery.MVC;
 
 class BitmapFetcher {
     private final static String TAG = BitmapFetcher.class.getSimpleName();
@@ -20,7 +20,7 @@ class BitmapFetcher {
         String url = null;
 
         try {
-            url = Pictures.get().getUrl(position);
+            url = MVC.model.getUrl(position);
             if (url == null)
                 return;
 
@@ -32,13 +32,11 @@ class BitmapFetcher {
             Log.e(TAG, "Error downloading image", e);
         }
         finally {
-            synchronized (Controller.class) {
-                Controller.taskCounter--;
-            }
+            MVC.controller.taskFinished();
         }
 
         if (bitmap != null)
-            Pictures.get().setBitmap(url, bitmap);
+            MVC.model.setBitmap(url, bitmap);
     }
 
     private byte[] getUrlBytes(String urlSpec) throws IOException {

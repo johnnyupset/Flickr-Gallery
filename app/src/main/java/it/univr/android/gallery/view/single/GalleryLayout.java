@@ -6,8 +6,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
+import it.univr.android.gallery.MVC;
 import it.univr.android.gallery.R;
-import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 import it.univr.android.gallery.view.GalleryActivity;
 import it.univr.android.gallery.view.GalleryFragment;
@@ -25,7 +25,7 @@ public class GalleryLayout extends FrameLayout implements it.univr.android.galle
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Pictures.get().registerView(this);
+        MVC.registerView(this);
 
         // Show the titles fragment at start
         if (getFragment() == null)
@@ -35,7 +35,7 @@ public class GalleryLayout extends FrameLayout implements it.univr.android.galle
 
     @Override
     protected void onDetachedFromWindow() {
-        Pictures.get().unregisterView(this);
+        MVC.unregisterView(this);
         super.onDetachedFromWindow();
     }
 
@@ -54,7 +54,7 @@ public class GalleryLayout extends FrameLayout implements it.univr.android.galle
     @Override
     public void onModelChanged(Pictures.Event event) {
         getFragment().onModelChanged(event);
-        if (Controller.isIdle())
+        if (MVC.controller.isIdle())
             ((GalleryActivity) getContext()).hideProgressIndicator();
     }
 

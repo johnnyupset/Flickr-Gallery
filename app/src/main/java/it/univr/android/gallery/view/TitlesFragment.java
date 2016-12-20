@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import it.univr.android.gallery.MVC;
 import it.univr.android.gallery.R;
-import it.univr.android.gallery.controller.Controller;
 import it.univr.android.gallery.model.Pictures;
 
 import static it.univr.android.gallery.model.Pictures.Event.PICTURES_LIST_CHANGED;
@@ -51,7 +51,7 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_load) {
             ((GalleryActivity) getActivity()).showProgressIndicator();
-            Controller.fetchListOfPictures(getActivity(), 40);
+            MVC.controller.fetchListOfPictures(getActivity(), 40);
             return true;
         }
         else
@@ -60,13 +60,13 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
 
     public void onModelChanged(Pictures.Event event) {
         if (event == PICTURES_LIST_CHANGED) {
-            String[] titles = Pictures.get().getTitles();
+            String[] titles = MVC.model.getTitles();
             if (titles != null)
                 // Create an array adapter for the list view, using the Pictures titles array
                 setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
             else {
                 ((GalleryActivity) getActivity()).showProgressIndicator();
-                Controller.fetchListOfPictures(getActivity(), 40);
+                MVC.controller.fetchListOfPictures(getActivity(), 40);
             }
         }
     }

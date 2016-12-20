@@ -17,8 +17,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import it.univr.android.gallery.MVC;
 import it.univr.android.gallery.model.Picture;
-import it.univr.android.gallery.model.Pictures;
 
 class ListOfPicturesFetcher {
     private final static String TAG = ListOfPicturesFetcher.class.getSimpleName();
@@ -28,12 +28,8 @@ class ListOfPicturesFetcher {
 
     ListOfPicturesFetcher(int howMany) {
         List<Picture> items = fetchItems(howMany);
-
-        synchronized (Controller.class) {
-            Controller.taskCounter--;
-        }
-
-        Pictures.get().setPictures(items);
+        MVC.controller.taskFinished();
+        MVC.model.setPictures(items);
     }
 
     private byte[] getUrlBytes(String urlSpec) throws IOException {
