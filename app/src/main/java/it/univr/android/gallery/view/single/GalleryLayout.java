@@ -40,7 +40,7 @@ public class GalleryLayout extends FrameLayout implements it.univr.android.galle
     }
 
     @Override
-    public void onTitleSelected(int position) {
+    public void showPicture(int position) {
         // Create fragment and give it an argument for the selected picture
         getFragmentManager().beginTransaction()
             // Replace whatever is in the gallery_layout_container view with this fragment

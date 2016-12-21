@@ -1,6 +1,8 @@
 package it.univr.android.gallery.model;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
+import android.os.Looper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,9 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 import it.univr.android.gallery.MVC;
+import it.univr.android.gallery.MVC.ViewTask;
+import it.univr.android.gallery.view.GalleryLayout;
 
 public class Pictures {
-    private static Pictures pictures;
     private String[] titles;
     private String[] urls;
     private Map<String, Bitmap> bitmaps = new HashMap<>();
@@ -20,18 +23,18 @@ public class Pictures {
         BITMAP_CHANGED
     };
 
-    public String[] getTitles() {
+    public synchronized String[] getTitles() {
         return titles;
     }
 
-    public Bitmap getBitmap(int position) {
+    public synchronized Bitmap getBitmap(int position) {
         if (urls == null || position < 0 || position >= urls.length)
             return null;
         else
             return bitmaps.get(urls[position]);
     }
 
-    public String getUrl(int position) {
+    public synchronized String getUrl(int position) {
         return urls != null && position >= 0 && position < urls.length ? urls[position] : null;
     }
 
@@ -44,16 +47,41 @@ public class Pictures {
             urls.add(picture.url);
         }
 
-        this.titles = titles.toArray(new String[titles.size()]);
-        this.urls = urls.toArray(new String[urls.size()]);
-        this.bitmaps.clear();
+        synchronized (this) {
+            this.titles = titles.toArray(new String[titles.size()]);
+            this.urls = urls.toArray(new String[urls.size()]);
+            this.bitmaps.clear();
+        }
 
-        MVC.notifyViews(Event.PICTURES_LIST_CHANGED);
+        notifyViews(Event.PICTURES_LIST_CHANGED);
     }
 
     public void setBitmap(String url, Bitmap bitmap) {
-        this.bitmaps.put(url, bitmap);
+        synchronized (this) {
+            this.bitmaps.put(url, bitmap);
+        }
 
-        MVC.notifyViews(Event.BITMAP_CHANGED);
+        notifyViews(Event.BITMAP_CHANGED);
     }
+
+    private void notifyViews(final Event event) {
+        final ViewTask viewProcess = new ViewTask() {
+            @Override
+            public void process(GalleryLayout view) {
+                view.onModelChanged(event);
+            }
+        };
+
+        // Notifies the views. This must be done in the UI thread,
+        // since views might have to redraw themselves
+        new Handler(Looper.getMainLooper()).post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        MVC.forEachView(viewProcess);
+                    }
+                }
+        );
+    }
+
 }

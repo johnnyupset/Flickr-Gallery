@@ -42,7 +42,7 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
         reflectModel();
     }
 
-    public void updatePicture(int position) {
+    public void showPicture(int position) {
         getArguments().putInt(ARG_POSITION, position);
         reflectModel();
     }
@@ -51,8 +51,11 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
         Bundle args = getArguments();
         int position = args.getInt(ARG_POSITION);
         if (position >= 0 && !reflectPosition(position)) {
-            ((GalleryActivity) getActivity()).showProgressIndicator();
-            MVC.controller.fetchPicture(getActivity(), position);
+            String url = MVC.model.getUrl(position);
+            if (url != null) {
+                ((GalleryActivity) getActivity()).showProgressIndicator();
+                MVC.controller.onPictureRequired(getActivity(), url);
+            }
         }
     }
 

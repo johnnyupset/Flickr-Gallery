@@ -15,15 +15,10 @@ import it.univr.android.gallery.MVC;
 class BitmapFetcher {
     private final static String TAG = BitmapFetcher.class.getSimpleName();
 
-    BitmapFetcher(int position) {
+    BitmapFetcher(String url) {
         Bitmap bitmap = null;
-        String url = null;
 
         try {
-            url = MVC.model.getUrl(position);
-            if (url == null)
-                return;
-
             Log.d(TAG, "Loading image " + url);
             byte[] bitmapBytes = getUrlBytes(url);
             bitmap = BitmapFactory.decodeByteArray(bitmapBytes, 0, bitmapBytes.length);

@@ -10,7 +10,7 @@ public class ControllerService extends IntentService {
     private final static String ACTION_FETCH_LIST_OF_PICTURES = "fetch list of pictures";
     private final static String PARAM_HOW_MANY = "how many";
     private final static String ACTION_FETCH_BITMAP = "fetch bitmap";
-    private final static String PARAM_POSITION = "position";
+    private final static String PARAM_URL = "url";
 
     public ControllerService() {
         super("gallery controller");
@@ -23,10 +23,10 @@ public class ControllerService extends IntentService {
         context.startService(intent);
     }
 
-    static void fetchPicture(Context context, int position) {
+    static void fetchPicture(Context context, String url) {
         Intent intent = new Intent(context, ControllerService.class);
         intent.setAction(ACTION_FETCH_BITMAP);
-        intent.putExtra(PARAM_POSITION, position);
+        intent.putExtra(PARAM_URL, url);
         context.startService(intent);
     }
 
@@ -43,7 +43,7 @@ public class ControllerService extends IntentService {
                 new ListOfPicturesFetcher(intent.getIntExtra(PARAM_HOW_MANY, 40));
                 break;
             case ACTION_FETCH_BITMAP:
-                new BitmapFetcher(intent.getIntExtra(PARAM_POSITION, -1));
+                new BitmapFetcher(intent.getStringExtra(PARAM_URL));
                 break;
         }
     }

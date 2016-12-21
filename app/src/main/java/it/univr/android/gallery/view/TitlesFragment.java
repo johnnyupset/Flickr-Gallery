@@ -41,8 +41,7 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        // Notify the parent layout of selected item
-        ((GalleryLayout) getActivity().findViewById(R.id.gallery_layout_container)).onTitleSelected(position);
+        MVC.controller.onTitleSelected(position);
         // Keep the selected item checked also after click
         getListView().setItemChecked(position, true);
     }
@@ -51,7 +50,7 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.menu_item_load) {
             ((GalleryActivity) getActivity()).showProgressIndicator();
-            MVC.controller.fetchListOfPictures(getActivity(), 40);
+            MVC.controller.onTitlesReloadRequest(getActivity());
             return true;
         }
         else
@@ -66,7 +65,7 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
                 setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
             else {
                 ((GalleryActivity) getActivity()).showProgressIndicator();
-                MVC.controller.fetchListOfPictures(getActivity(), 40);
+                MVC.controller.onTitlesReloadRequest(getActivity());
             }
         }
     }

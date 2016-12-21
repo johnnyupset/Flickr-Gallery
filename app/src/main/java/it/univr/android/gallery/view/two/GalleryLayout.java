@@ -33,8 +33,8 @@ public class GalleryLayout extends LinearLayout implements it.univr.android.gall
     }
 
     @Override
-    public void onTitleSelected(int position) {
-        getPictureFragment().updatePicture(position);
+    public void showPicture(int position) {
+        getPictureFragment().showPicture(position);
     }
 
     @Override
