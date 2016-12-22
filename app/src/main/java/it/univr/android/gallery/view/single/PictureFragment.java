@@ -14,11 +14,11 @@ public class PictureFragment extends it.univr.android.gallery.view.PictureFragme
         return fragment;
     }
 
-    protected boolean reflectPosition(int position) {
-        boolean reflected = super.reflectPosition(position);
-        if (reflected)
+    protected boolean showBitmapIfDownloaded(int position) {
+        boolean shown = super.showBitmapIfDownloaded(position);
+        if (shown)
             ((TextView) getView().findViewById(R.id.picture_title)).setText(MVC.model.getTitles()[position]);
 
-        return reflected;
+        return shown;
     }
 }

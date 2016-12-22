@@ -12,10 +12,14 @@ import it.univr.android.gallery.model.Pictures;
 import it.univr.android.gallery.view.GalleryActivity;
 import it.univr.android.gallery.view.GalleryFragment;
 
-public class GalleryLayout extends FrameLayout implements it.univr.android.gallery.view.GalleryLayout {
+/**
+ * The view for a single pane implementation of the app.
+ */
+public class GalleryLayout extends FrameLayout
+        implements it.univr.android.gallery.view.GalleryLayout {
 
     private GalleryFragment getFragment() {
-        return (GalleryFragment) getFragmentManager().findFragmentById(R.id.gallery_layout_container);
+        return (GalleryFragment) getFragmentManager().findFragmentById(R.id.gallery_layout);
     }
 
     private FragmentManager getFragmentManager() {
@@ -30,7 +34,7 @@ public class GalleryLayout extends FrameLayout implements it.univr.android.galle
         // Show the titles fragment at start
         if (getFragment() == null)
             getFragmentManager().beginTransaction()
-                    .add(R.id.gallery_layout_container, new TitlesFragment()).commit();
+                    .add(R.id.gallery_layout, new TitlesFragment()).commit();
     }
 
     @Override
@@ -44,7 +48,7 @@ public class GalleryLayout extends FrameLayout implements it.univr.android.galle
         // Create fragment and give it an argument for the selected picture
         getFragmentManager().beginTransaction()
             // Replace whatever is in the gallery_layout_container view with this fragment
-            .replace(R.id.gallery_layout_container, PictureFragment.mkInstance(position))
+            .replace(R.id.gallery_layout, PictureFragment.mkInstance(position))
             // Add the transaction to the back stack so the user can navigate back
             .addToBackStack(null)
             // Commit the transaction
@@ -53,7 +57,9 @@ public class GalleryLayout extends FrameLayout implements it.univr.android.galle
 
     @Override
     public void onModelChanged(Pictures.Event event) {
+        // Delegate to the only fragment inside this layout
         getFragment().onModelChanged(event);
+        // If no background task is in progress, remove the progress indicator
         if (MVC.controller.isIdle())
             ((GalleryActivity) getContext()).hideProgressIndicator();
     }

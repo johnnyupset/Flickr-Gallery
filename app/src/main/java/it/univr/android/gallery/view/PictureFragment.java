@@ -39,27 +39,31 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
     @Override
     public void onStart() {
         super.onStart();
-        reflectModel();
+        showPictureOrDownloadIfMissing();
     }
 
     public void showPicture(int position) {
         getArguments().putInt(ARG_POSITION, position);
-        reflectModel();
+        showPictureOrDownloadIfMissing();
     }
 
-    private void reflectModel() {
-        Bundle args = getArguments();
-        int position = args.getInt(ARG_POSITION);
-        if (position >= 0 && !reflectPosition(position)) {
-            String url = MVC.model.getUrl(position);
-            if (url != null) {
-                ((GalleryActivity) getActivity()).showProgressIndicator();
-                MVC.controller.onPictureRequired(getActivity(), url);
-            }
+    private void showPictureOrDownloadIfMissing() {
+        int position = getArguments().getInt(ARG_POSITION);
+        String url;
+        if (!showBitmapIfDownloaded(position) && (url = MVC.model.getUrl(position)) != null) {
+            ((GalleryActivity) getActivity()).showProgressIndicator();
+            MVC.controller.onPictureRequired(getActivity(), url);
         }
     }
 
-    protected boolean reflectPosition(int position) {
+    /**
+     * Shows the bitmap at the given position in the model.
+     *
+     * @param position the position
+     * @return true if the bitmap was shown, false otherwise, hence if the
+     *         position is illegal or the model does not contain the bitmap yet
+     */
+    protected boolean showBitmapIfDownloaded(int position) {
         Bitmap bitmap = MVC.model.getBitmap(position);
         if (bitmap != null) {
             ((ImageView) getView().findViewById(R.id.picture)).setImageBitmap(bitmap);
@@ -72,11 +76,14 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
     public void onModelChanged(Pictures.Event event) {
         switch (event) {
             case BITMAP_CHANGED: {
-                reflectModel();
+                // A new bitmap arrived: update the picture in the view
+                showPictureOrDownloadIfMissing();
                 break;
             }
             case PICTURES_LIST_CHANGED:
+                // Erase the picture shown in the view, since the list of pictures has changed
                 ((ImageView) getView().findViewById(R.id.picture)).setImageBitmap(null);
+                // Take note that no picture is currently selected
                 getArguments().putInt(ARG_POSITION, -1);
                 break;
         }

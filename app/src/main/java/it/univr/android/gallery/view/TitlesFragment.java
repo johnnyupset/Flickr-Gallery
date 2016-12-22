@@ -27,10 +27,16 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (getListAdapter() == null)
-            setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, new String[0]));
+        // show the titles, or the empty list if there is none yet
+        String[] titles = MVC.model.getTitles();
+        setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1,
+                titles == null ? new String[0] : titles));
 
-        onModelChanged(PICTURES_LIST_CHANGED);
+        // if no titles exist yet, ask the controller to reload them
+        if (titles == null) {
+            ((GalleryActivity) getActivity()).showProgressIndicator();
+            MVC.controller.onTitlesReloadRequest(getActivity());
+        }
     }
 
     @Override
@@ -42,8 +48,6 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         MVC.controller.onTitleSelected(position);
-        // Keep the selected item checked also after click
-        getListView().setItemChecked(position, true);
     }
 
     @Override
@@ -57,16 +61,12 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
             return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void onModelChanged(Pictures.Event event) {
         if (event == PICTURES_LIST_CHANGED) {
             String[] titles = MVC.model.getTitles();
-            if (titles != null)
-                // Create an array adapter for the list view, using the Pictures titles array
-                setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
-            else {
-                ((GalleryActivity) getActivity()).showProgressIndicator();
-                MVC.controller.onTitlesReloadRequest(getActivity());
-            }
+            // create an array adapter for the list view, using the pictures titles array
+            setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
         }
     }
 }
