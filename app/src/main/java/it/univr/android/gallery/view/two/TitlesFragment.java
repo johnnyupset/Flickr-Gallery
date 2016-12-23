@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+/**
+ * The titles fragment for a two panes layout. It modifies the standard
+ * behavior by making the selected item remain highlighted.
+ */
 public class TitlesFragment extends it.univr.android.gallery.view.TitlesFragment {
 
     @Override

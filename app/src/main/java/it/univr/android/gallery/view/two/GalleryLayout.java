@@ -10,14 +10,17 @@ import it.univr.android.gallery.R;
 import it.univr.android.gallery.model.Pictures;
 import it.univr.android.gallery.view.GalleryActivity;
 
-public class GalleryLayout extends LinearLayout implements it.univr.android.gallery.view.GalleryLayout {
+public class GalleryLayout extends LinearLayout
+        implements it.univr.android.gallery.view.GalleryLayout {
 
     private TitlesFragment getTitlesFragment() {
-        return (TitlesFragment) ((Activity) getContext()).getFragmentManager().findFragmentById(R.id.titles_fragment);
+        return (TitlesFragment) ((Activity) getContext())
+                .getFragmentManager().findFragmentById(R.id.titles_fragment);
     }
 
     private PictureFragment getPictureFragment() {
-        return (PictureFragment) ((Activity) getContext()).getFragmentManager().findFragmentById(R.id.picture_fragment);
+        return (PictureFragment) ((Activity) getContext())
+                .getFragmentManager().findFragmentById(R.id.picture_fragment);
     }
 
     @Override
@@ -39,8 +42,10 @@ public class GalleryLayout extends LinearLayout implements it.univr.android.gall
 
     @Override
     public void onModelChanged(Pictures.Event event) {
+        // Delegate to both fragments inside this layout
         getTitlesFragment().onModelChanged(event);
         getPictureFragment().onModelChanged(event);
+        // If no background task is in progress, remove the progress indicator
         if (MVC.controller.isIdle())
             ((GalleryActivity) getContext()).hideProgressIndicator();
     }

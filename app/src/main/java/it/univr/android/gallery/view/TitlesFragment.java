@@ -2,6 +2,7 @@ package it.univr.android.gallery.view;
 
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.support.annotation.UiThread;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,24 +16,25 @@ import it.univr.android.gallery.model.Pictures;
 
 import static it.univr.android.gallery.model.Pictures.Event.PICTURES_LIST_CHANGED;
 
-public abstract class TitlesFragment extends ListFragment implements GalleryFragment {
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-    }
+/**
+ * A fragment containing the titles of the Flickr Gallery app.
+ * Titles can be clicked to show their corresponding picture.
+ * Titles can be reloaded through a menu item.
+ */
+public abstract class TitlesFragment extends ListFragment
+        implements GalleryFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        // show the titles, or the empty list if there is none yet
+        // Show the titles, or the empty list if there is none yet
         String[] titles = MVC.model.getTitles();
-        setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1,
+        setListAdapter(new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_activated_1,
                 titles == null ? new String[0] : titles));
 
-        // if no titles exist yet, ask the controller to reload them
+        // If no titles exist yet, ask the controller to reload them
         if (titles == null) {
             ((GalleryActivity) getActivity()).showProgressIndicator();
             MVC.controller.onTitlesReloadRequest(getActivity());
@@ -40,14 +42,16 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_titles, menu);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // This fragment uses menus
+        setHasOptionsMenu(true);
     }
 
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-        MVC.controller.onTitleSelected(position);
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_titles, menu);
     }
 
     @Override
@@ -62,11 +66,17 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
     }
 
     @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        // Delegate to the controller
+        MVC.controller.onTitleSelected(position);
+    }
+
+    @Override @UiThread
     public void onModelChanged(Pictures.Event event) {
-        if (event == PICTURES_LIST_CHANGED) {
-            String[] titles = MVC.model.getTitles();
-            // create an array adapter for the list view, using the pictures titles array
-            setListAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_activated_1, titles));
-        }
+        if (event == PICTURES_LIST_CHANGED)
+            // Show the new list of titles
+            setListAdapter(new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_list_item_activated_1,
+                    MVC.model.getTitles()));
     }
 }

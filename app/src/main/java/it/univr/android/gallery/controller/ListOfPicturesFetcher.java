@@ -1,6 +1,7 @@
 package it.univr.android.gallery.controller;
 
 import android.net.Uri;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -20,51 +21,26 @@ import java.util.List;
 import it.univr.android.gallery.MVC;
 import it.univr.android.gallery.model.Picture;
 
+/**
+ * An object that fetches the latest titles uploaded
+ * into Flickr's servers.
+ */
 class ListOfPicturesFetcher {
     private final static String TAG = ListOfPicturesFetcher.class.getSimpleName();
     private final static String ENDPOINT = "https://api.flickr.com/services/rest/";
     private final static String API_KEY = "388f5641e6dc1ecac49678a156f375df";
     private final static int MAX_TITLE_LENGTH = 40;
 
+    @WorkerThread
     ListOfPicturesFetcher(int howMany) {
         List<Picture> items = fetchItems(howMany);
         MVC.controller.taskFinished();
         MVC.model.setPictures(items);
     }
 
-    private byte[] getUrlBytes(String urlSpec) throws IOException {
-        URL url = new URL(urlSpec);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        ByteArrayOutputStream out = null;
-
-        try {
-            out = new ByteArrayOutputStream();
-            InputStream in = connection.getInputStream();
-
-            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
-                return new byte[0];
-
-            int bytesRead = 0;
-            byte[] buffer = new byte[1024];
-            while ((bytesRead = in.read(buffer)) > 0)
-                out.write(buffer, 0, bytesRead);
-
-            return out.toByteArray();
-        }
-        finally {
-            if (out != null)
-                out.close();
-
-            connection.disconnect();
-        }
-    }
-
-    private String getUrl(String urlSpec) throws IOException {
-        return new String(getUrlBytes(urlSpec));
-    }
-
     private List<Picture> fetchItems(int howMany) {
         try {
+            // Build a query to Flickr's webservice
             String url = Uri.parse(ENDPOINT).buildUpon()
                     .appendQueryParameter("method", "flickr.photos.getRecent")
                     .appendQueryParameter("api_key", API_KEY)
@@ -73,7 +49,7 @@ class ListOfPicturesFetcher {
                     .build().toString();
 
             Log.i(TAG, "Sent query: " + url);
-            String xmlString = getUrl(url);
+            String xmlString = getFrom(url);
             Log.i(TAG, "Received XML: " + xmlString);
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -87,6 +63,32 @@ class ListOfPicturesFetcher {
         }
     }
 
+    private String getFrom(String url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        ByteArrayOutputStream out = null;
+
+        try {
+            out = new ByteArrayOutputStream();
+            InputStream in = connection.getInputStream();
+
+            if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
+                throw new IOException();
+
+            int bytesRead = 0;
+            byte[] buffer = new byte[1024];
+            while ((bytesRead = in.read(buffer)) > 0)
+                out.write(buffer, 0, bytesRead);
+
+            return new String(out.toByteArray());
+        }
+        finally {
+            if (out != null)
+                out.close();
+
+            connection.disconnect();
+        }
+    }
+
     private List<Picture> parseItems(XmlPullParser parser) throws XmlPullParserException, IOException {
         List<Picture> items = new ArrayList<>();
 
@@ -94,7 +96,8 @@ class ListOfPicturesFetcher {
             if (eventType == XmlPullParser.START_TAG && "photo".equals(parser.getName())) {
                 String caption = parser.getAttributeValue(null, "title");
                 String url = parser.getAttributeValue(null, "url_z");
-                if (caption == null || caption.isEmpty() || url == null) // The picture might be missing or not have this size
+                if (caption == null || caption.isEmpty() || url == null)
+                    // The picture might be missing or not have this size
                     continue;
 
                 if (caption.length() > MAX_TITLE_LENGTH)

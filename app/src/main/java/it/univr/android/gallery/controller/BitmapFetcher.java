@@ -2,6 +2,7 @@ package it.univr.android.gallery.controller;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.support.annotation.WorkerThread;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -12,9 +13,13 @@ import java.net.URL;
 
 import it.univr.android.gallery.MVC;
 
+/**
+ * An object that fetches a given bitmap from Flickr's servers.
+ */
 class BitmapFetcher {
     private final static String TAG = BitmapFetcher.class.getSimpleName();
 
+    @WorkerThread
     BitmapFetcher(String url) {
         Bitmap bitmap = null;
 
@@ -34,9 +39,8 @@ class BitmapFetcher {
             MVC.model.setBitmap(url, bitmap);
     }
 
-    private byte[] getUrlBytes(String urlSpec) throws IOException {
-        URL url = new URL(urlSpec);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+    private byte[] getUrlBytes(String url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
         ByteArrayOutputStream out = null;
 
         try {

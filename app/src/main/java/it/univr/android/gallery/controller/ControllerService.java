@@ -3,9 +3,14 @@ package it.univr.android.gallery.controller;
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.WorkerThread;
 
 import it.univr.android.gallery.MVC;
 
+/**
+ * An Android service that executes long-running background tasks
+ * on a worker thread. At the end, it modifies the model accordingly.
+ */
 public class ControllerService extends IntentService {
     private final static String ACTION_FETCH_LIST_OF_PICTURES = "fetch list of pictures";
     private final static String PARAM_HOW_MANY = "how many";
@@ -16,6 +21,12 @@ public class ControllerService extends IntentService {
         super("gallery controller");
     }
 
+    /**
+     * Fetches the latest titles from Flickr servers.
+     *
+     * @param context the context that needs the titles
+     * @param howMany the number of titles to download
+     */
     static void fetchListOfPictures(Context context, int howMany) {
         Intent intent = new Intent(context, ControllerService.class);
         intent.setAction(ACTION_FETCH_LIST_OF_PICTURES);
@@ -23,6 +34,12 @@ public class ControllerService extends IntentService {
         context.startService(intent);
     }
 
+    /**
+     * Fetches the picture at the given address.
+     *
+     * @param context the context that needs the picture
+     * @param url the address from where the picture can be downloaded
+     */
     static void fetchPicture(Context context, String url) {
         Intent intent = new Intent(context, ControllerService.class);
         intent.setAction(ACTION_FETCH_BITMAP);
@@ -36,7 +53,7 @@ public class ControllerService extends IntentService {
         super.onDestroy();
     }
 
-    @Override
+    @Override @WorkerThread
     protected void onHandleIntent(Intent intent) {
         switch (intent.getAction()) {
             case ACTION_FETCH_LIST_OF_PICTURES:
