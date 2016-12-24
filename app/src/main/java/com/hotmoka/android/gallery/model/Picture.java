@@ -1,4 +1,4 @@
-package it.univr.android.gallery.model;
+package com.hotmoka.android.gallery.model;
 
 public class Picture {
     public final String title;

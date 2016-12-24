@@ -1,10 +1,10 @@
-package it.univr.android.gallery.view.single;
+package com.hotmoka.android.gallery.view.single;
 
 import android.support.annotation.UiThread;
 import android.widget.TextView;
 
-import it.univr.android.gallery.MVC;
-import it.univr.android.gallery.R;
+import com.hotmoka.android.gallery.MVC;
+import com.hotmoka.android.gallery.R;
 
 /**
  * The picture fragment for a single pane layout.
@@ -12,7 +12,7 @@ import it.univr.android.gallery.R;
  * and redefines the behavior at picture show up by also
  * reporting the title of the picture below it.
  */
-public class PictureFragment extends it.univr.android.gallery.view.PictureFragment {
+public class PictureFragment extends com.hotmoka.android.gallery.view.PictureFragment {
 
     /**
      * Convenience method to create a fragment that shows the picture

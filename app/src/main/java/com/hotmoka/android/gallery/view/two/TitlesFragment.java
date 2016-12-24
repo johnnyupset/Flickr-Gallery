@@ -1,4 +1,4 @@
-package it.univr.android.gallery.view.two;
+package com.hotmoka.android.gallery.view.two;
 
 import android.os.Bundle;
 import android.view.View;
@@ -8,7 +8,7 @@ import android.widget.ListView;
  * The titles fragment for a two panes layout. It modifies the standard
  * behavior by making the selected item remain highlighted.
  */
-public class TitlesFragment extends it.univr.android.gallery.view.TitlesFragment {
+public class TitlesFragment extends com.hotmoka.android.gallery.view.TitlesFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

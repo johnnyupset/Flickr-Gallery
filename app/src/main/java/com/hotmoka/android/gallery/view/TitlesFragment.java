@@ -1,4 +1,4 @@
-package it.univr.android.gallery.view;
+package com.hotmoka.android.gallery.view;
 
 import android.app.ListFragment;
 import android.os.Bundle;
@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import it.univr.android.gallery.MVC;
-import it.univr.android.gallery.R;
-import it.univr.android.gallery.model.Pictures;
+import com.hotmoka.android.gallery.MVC;
+import com.hotmoka.android.gallery.R;
+import com.hotmoka.android.gallery.model.Pictures;
 
-import static it.univr.android.gallery.model.Pictures.Event.PICTURES_LIST_CHANGED;
+import static com.hotmoka.android.gallery.model.Pictures.Event.PICTURES_LIST_CHANGED;
 
 /**
  * A fragment containing the titles of the Flickr Gallery app.

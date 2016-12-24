@@ -1,13 +1,13 @@
-package it.univr.android.gallery;
+package com.hotmoka.android.gallery;
 
 import android.support.annotation.UiThread;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import it.univr.android.gallery.controller.Controller;
-import it.univr.android.gallery.model.Pictures;
-import it.univr.android.gallery.view.GalleryLayout;
+import com.hotmoka.android.gallery.controller.Controller;
+import com.hotmoka.android.gallery.model.Pictures;
+import com.hotmoka.android.gallery.view.GalleryLayout;
 
 /**
  * A Model/View/Controller triple. It is a static data structure

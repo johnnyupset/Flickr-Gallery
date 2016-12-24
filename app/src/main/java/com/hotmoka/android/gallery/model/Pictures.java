@@ -1,4 +1,4 @@
-package it.univr.android.gallery.model;
+package com.hotmoka.android.gallery.model;
 
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -6,12 +6,12 @@ import android.os.Looper;
 import android.support.annotation.UiThread;
 import android.support.annotation.WorkerThread;
 
+import com.hotmoka.android.gallery.MVC;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import it.univr.android.gallery.MVC;
 
 /**
  * The model of the application. It stores information about the titles

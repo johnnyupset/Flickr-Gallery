@@ -1,10 +1,10 @@
-package it.univr.android.gallery.view;
+package com.hotmoka.android.gallery.view;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 
-import it.univr.android.gallery.R;
+import com.hotmoka.android.gallery.R;
 
 /**
  * The user interface of the app. It uses two

@@ -1,8 +1,8 @@
-package it.univr.android.gallery.view;
+package com.hotmoka.android.gallery.view;
 
 import android.support.annotation.UiThread;
 
-import it.univr.android.gallery.model.Pictures;
+import com.hotmoka.android.gallery.model.Pictures;
 
 public interface GalleryFragment {
 

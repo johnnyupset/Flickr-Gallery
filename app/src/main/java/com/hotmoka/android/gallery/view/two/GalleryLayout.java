@@ -1,17 +1,17 @@
-package it.univr.android.gallery.view.two;
+package com.hotmoka.android.gallery.view.two;
 
 import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
 
-import it.univr.android.gallery.MVC;
-import it.univr.android.gallery.R;
-import it.univr.android.gallery.model.Pictures;
-import it.univr.android.gallery.view.GalleryActivity;
+import com.hotmoka.android.gallery.MVC;
+import com.hotmoka.android.gallery.R;
+import com.hotmoka.android.gallery.model.Pictures;
+import com.hotmoka.android.gallery.view.GalleryActivity;
 
 public class GalleryLayout extends LinearLayout
-        implements it.univr.android.gallery.view.GalleryLayout {
+        implements com.hotmoka.android.gallery.view.GalleryLayout {
 
     private TitlesFragment getTitlesFragment() {
         return (TitlesFragment) ((Activity) getContext())

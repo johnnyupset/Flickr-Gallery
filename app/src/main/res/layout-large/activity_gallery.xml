@@ -4,26 +4,26 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent" >
 
-    <it.univr.android.gallery.view.two.GalleryLayout
+    <com.hotmoka.android.gallery.view.two.GalleryLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
         <fragment
             android:id="@+id/titles_fragment"
-            android:name="it.univr.android.gallery.view.two.TitlesFragment"
+            android:name="com.hotmoka.android.gallery.view.two.TitlesFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
 
         <fragment
             android:id="@+id/picture_fragment"
-            android:name="it.univr.android.gallery.view.two.PictureFragment"
+            android:name="com.hotmoka.android.gallery.view.two.PictureFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"/>
 
-    </it.univr.android.gallery.view.two.GalleryLayout>
+    </com.hotmoka.android.gallery.view.two.GalleryLayout>
 
     <ProgressBar
         android:id="@+id/progress"

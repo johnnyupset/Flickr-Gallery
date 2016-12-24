@@ -1,4 +1,4 @@
-package it.univr.android.gallery.view.single;
+package com.hotmoka.android.gallery.view.single;
 
 import android.app.Activity;
 import android.app.FragmentManager;
@@ -6,17 +6,17 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
 
-import it.univr.android.gallery.MVC;
-import it.univr.android.gallery.R;
-import it.univr.android.gallery.model.Pictures;
-import it.univr.android.gallery.view.GalleryActivity;
-import it.univr.android.gallery.view.GalleryFragment;
+import com.hotmoka.android.gallery.MVC;
+import com.hotmoka.android.gallery.R;
+import com.hotmoka.android.gallery.model.Pictures;
+import com.hotmoka.android.gallery.view.GalleryActivity;
+import com.hotmoka.android.gallery.view.GalleryFragment;
 
 /**
  * The view for a single pane implementation of the app.
  */
 public class GalleryLayout extends FrameLayout
-        implements it.univr.android.gallery.view.GalleryLayout {
+        implements com.hotmoka.android.gallery.view.GalleryLayout {
 
     private GalleryFragment getFragment() {
         return (GalleryFragment) getFragmentManager().findFragmentById(R.id.gallery_layout);

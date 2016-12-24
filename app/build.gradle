@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.3"
 
     defaultConfig {
-        applicationId "com.example.android.fragments"
+        applicationId "com.hotmoka.android.gallery"
         minSdkVersion 11
         targetSdkVersion 15
         jackOptions {

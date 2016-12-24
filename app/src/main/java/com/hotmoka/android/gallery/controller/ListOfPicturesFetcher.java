@@ -1,4 +1,4 @@
-package it.univr.android.gallery.controller;
+package com.hotmoka.android.gallery.controller;
 
 import android.net.Uri;
 import android.support.annotation.WorkerThread;
@@ -18,8 +18,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import it.univr.android.gallery.MVC;
-import it.univr.android.gallery.model.Picture;
+import com.hotmoka.android.gallery.MVC;
+import com.hotmoka.android.gallery.model.Picture;
 
 /**
  * An object that fetches the latest titles uploaded

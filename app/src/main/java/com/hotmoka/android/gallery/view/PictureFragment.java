@@ -1,4 +1,4 @@
-package it.univr.android.gallery.view;
+package com.hotmoka.android.gallery.view;
 
 import android.app.Fragment;
 import android.graphics.Bitmap;
@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import it.univr.android.gallery.MVC;
-import it.univr.android.gallery.R;
-import it.univr.android.gallery.model.Pictures;
+import com.hotmoka.android.gallery.MVC;
+import com.hotmoka.android.gallery.R;
+import com.hotmoka.android.gallery.model.Pictures;
 
 /**
  * A fragment containing the picture currently shown in the

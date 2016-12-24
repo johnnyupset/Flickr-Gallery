@@ -16,7 +16,7 @@ limitations under the License.
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="it.univr.android.gallery"
+    package="com.hotmoka.android.gallery"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -28,7 +28,7 @@ limitations under the License.
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity
-            android:name="it.univr.android.gallery.view.GalleryActivity"
+            android:name="com.hotmoka.android.gallery.view.GalleryActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +36,7 @@ limitations under the License.
             </intent-filter>
         </activity>
         <service
-            android:name=".controller.ControllerService"
+            android:name="com.hotmoka.android.gallery.controller.ControllerService"
             android:exported="false"/>
     </application>
 

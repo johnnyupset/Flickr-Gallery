@@ -1,11 +1,11 @@
-package it.univr.android.gallery.controller;
+package com.hotmoka.android.gallery.controller;
 
 import android.app.IntentService;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.WorkerThread;
 
-import it.univr.android.gallery.MVC;
+import com.hotmoka.android.gallery.MVC;
 
 /**
  * An Android service that executes long-running background tasks

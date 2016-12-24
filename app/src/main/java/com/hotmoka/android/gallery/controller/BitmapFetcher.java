@@ -1,4 +1,4 @@
-package it.univr.android.gallery.controller;
+package com.hotmoka.android.gallery.controller;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +11,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import it.univr.android.gallery.MVC;
+import com.hotmoka.android.gallery.MVC;
 
 /**
  * An object that fetches a given bitmap from Flickr's servers.

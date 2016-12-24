@@ -1,11 +1,11 @@
-package it.univr.android.gallery.controller;
+package com.hotmoka.android.gallery.controller;
 
 import android.content.Context;
 import android.support.annotation.UiThread;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import it.univr.android.gallery.MVC;
+import com.hotmoka.android.gallery.MVC;
 
 /**
  * The controller reacts to user events and allows the execution
