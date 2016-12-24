@@ -4,6 +4,9 @@ import android.net.Uri;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
+import com.hotmoka.android.gallery.MVC;
+import com.hotmoka.android.gallery.model.Picture;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -18,9 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.hotmoka.android.gallery.MVC;
-import com.hotmoka.android.gallery.model.Picture;
-
 /**
  * An object that fetches the latest titles uploaded
  * into Flickr's servers.
@@ -28,7 +28,8 @@ import com.hotmoka.android.gallery.model.Picture;
 class ListOfPicturesFetcher {
     private final static String TAG = ListOfPicturesFetcher.class.getSimpleName();
     private final static String ENDPOINT = "https://api.flickr.com/services/rest/";
-    private final static String API_KEY = "388f5641e6dc1ecac49678a156f375df";
+    // Put your Flickr API key here. Get it from https://www.flickr.com/services/api/misc.api_keys.html
+    private final static String API_KEY = "...";
     private final static int MAX_TITLE_LENGTH = 40;
 
     @WorkerThread
