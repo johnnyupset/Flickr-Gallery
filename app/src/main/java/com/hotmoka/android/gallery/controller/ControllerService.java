@@ -33,7 +33,7 @@ public class ControllerService extends IntentService {
         Intent intent = new Intent(context, ControllerService.class);
         intent.setAction(ACTION_FETCH_LIST_OF_PICTURES);
         intent.putExtra(PARAM_HOW_MANY, howMany);
-        intent.putExtra(PARAM_HOW_MANY, context.getString(R.string.flick_key));
+        intent.putExtra(PARAM_API_KEY, context.getString(R.string.flick_key));
         context.startService(intent);
     }
 
