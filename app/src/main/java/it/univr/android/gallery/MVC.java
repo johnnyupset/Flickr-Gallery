@@ -80,8 +80,7 @@ public class MVC {
     @UiThread
     public static void forEachView(ViewTask task) {
         // Internal iteration, preferred since we do not need
-        // to expose the modifiable set of views.
-        // Eventually, lambda expressions should be used here
+        // to expose the modifiable set of views
         for (GalleryLayout view: views)
             task.process(view);
     }

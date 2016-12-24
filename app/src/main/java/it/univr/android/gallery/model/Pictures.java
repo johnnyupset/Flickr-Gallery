@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Map;
 
 import it.univr.android.gallery.MVC;
-import it.univr.android.gallery.MVC.ViewTask;
-import it.univr.android.gallery.view.GalleryLayout;
 
 /**
  * The model of the application. It stores information about the titles
@@ -134,24 +132,10 @@ public class Pictures {
      *
      * @param event the event
      */
-    private void notifyViews(final Event event) {
-        final ViewTask viewProcess = new ViewTask() {
-            @Override
-            public void process(GalleryLayout view) {
-                view.onModelChanged(event);
-            }
-        };
-
+    private void notifyViews(Event event) {
         // Notify the views. This must be done in the UI thread,
         // since views might have to redraw themselves
-        new Handler(Looper.getMainLooper()).post(
-                new Runnable() {
-                    @Override @UiThread
-                    public void run() {
-                        MVC.forEachView(viewProcess);
-                    }
-                }
-        );
+        new Handler(Looper.getMainLooper()).post
+                (() -> MVC.forEachView(view -> view.onModelChanged(event)));
     }
-
 }

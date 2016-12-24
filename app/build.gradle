@@ -8,6 +8,9 @@ android {
         applicationId "com.example.android.fragments"
         minSdkVersion 11
         targetSdkVersion 15
+        jackOptions {
+            enabled true
+        }
     }
 
     buildTypes {
@@ -17,8 +20,8 @@ android {
         }
     }
     compileOptions {
-        targetCompatibility 1.7
-        sourceCompatibility 1.7
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 

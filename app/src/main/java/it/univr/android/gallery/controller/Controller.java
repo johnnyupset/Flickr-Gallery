@@ -6,8 +6,6 @@ import android.support.annotation.UiThread;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import it.univr.android.gallery.MVC;
-import it.univr.android.gallery.MVC.ViewTask;
-import it.univr.android.gallery.view.GalleryLayout;
 
 /**
  * The controller reacts to user events and allows the execution
@@ -54,13 +52,8 @@ public class Controller {
     }
 
     @UiThread
-    public void onTitleSelected(final int position) {
-        MVC.forEachView(new ViewTask() {
-            @Override
-            public void process(GalleryLayout view) {
-                view.showPicture(position);
-            }
-        });
+    public void onTitleSelected(int position) {
+        MVC.forEachView(view -> view.showPicture(position));
     }
 
     /**
