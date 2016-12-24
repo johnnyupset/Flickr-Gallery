@@ -28,23 +28,21 @@ import java.util.List;
 class ListOfPicturesFetcher {
     private final static String TAG = ListOfPicturesFetcher.class.getSimpleName();
     private final static String ENDPOINT = "https://api.flickr.com/services/rest/";
-    // Put your Flickr API key here. Get it from https://www.flickr.com/services/api/misc.api_keys.html
-    private final static String API_KEY = "...";
     private final static int MAX_TITLE_LENGTH = 40;
 
     @WorkerThread
-    ListOfPicturesFetcher(int howMany) {
-        List<Picture> items = fetchItems(howMany);
+    ListOfPicturesFetcher(int howMany, String APIKey) {
+        List<Picture> items = fetchItems(howMany, APIKey);
         MVC.controller.taskFinished();
         MVC.model.setPictures(items);
     }
 
-    private List<Picture> fetchItems(int howMany) {
+    private List<Picture> fetchItems(int howMany, String APIKey) {
         try {
             // Build a query to Flickr's webservice
             String url = Uri.parse(ENDPOINT).buildUpon()
                     .appendQueryParameter("method", "flickr.photos.getRecent")
-                    .appendQueryParameter("api_key", API_KEY)
+                    .appendQueryParameter("api_key", APIKey)
                     .appendQueryParameter("extras", "url_z")
                     .appendQueryParameter("per_page", String.valueOf(howMany))
                     .build().toString();

@@ -3,4 +3,6 @@
 <resources>
     <string name="app_name">Flickr Gallery</string>
     <string name="load_action">Load Latest</string>
+    <!-- put your free Flick API key below -->
+    <string name="flick_key">...</string>
 </resources>

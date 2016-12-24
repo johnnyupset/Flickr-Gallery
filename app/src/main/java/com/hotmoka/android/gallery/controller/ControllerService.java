@@ -6,14 +6,16 @@ import android.content.Intent;
 import android.support.annotation.WorkerThread;
 
 import com.hotmoka.android.gallery.MVC;
+import com.hotmoka.android.gallery.R;
 
 /**
  * An Android service that executes long-running background tasks
  * on a worker thread. At the end, it modifies the model accordingly.
  */
 public class ControllerService extends IntentService {
-    private final static String ACTION_FETCH_LIST_OF_PICTURES = "fetch list of pictures";
+    private final static String ACTION_FETCH_LIST_OF_PICTURES = "fetch list";
     private final static String PARAM_HOW_MANY = "how many";
+    private final static String PARAM_API_KEY = "API key";
     private final static String ACTION_FETCH_BITMAP = "fetch bitmap";
     private final static String PARAM_URL = "url";
 
@@ -31,6 +33,7 @@ public class ControllerService extends IntentService {
         Intent intent = new Intent(context, ControllerService.class);
         intent.setAction(ACTION_FETCH_LIST_OF_PICTURES);
         intent.putExtra(PARAM_HOW_MANY, howMany);
+        intent.putExtra(PARAM_HOW_MANY, context.getString(R.string.flick_key));
         context.startService(intent);
     }
 
@@ -57,7 +60,8 @@ public class ControllerService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         switch (intent.getAction()) {
             case ACTION_FETCH_LIST_OF_PICTURES:
-                new ListOfPicturesFetcher(intent.getIntExtra(PARAM_HOW_MANY, 40));
+                new ListOfPicturesFetcher(intent.getIntExtra(PARAM_HOW_MANY, 40),
+                        intent.getStringExtra(PARAM_API_KEY));
                 break;
             case ACTION_FETCH_BITMAP:
                 new BitmapFetcher(intent.getStringExtra(PARAM_URL));
