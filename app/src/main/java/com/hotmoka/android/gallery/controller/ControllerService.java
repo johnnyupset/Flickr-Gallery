@@ -18,6 +18,7 @@ public class ControllerService extends IntentService {
     private final static String PARAM_API_KEY = "API key";
     private final static String ACTION_FETCH_BITMAP = "fetch bitmap";
     private final static String PARAM_URL = "url";
+    // TODO private final static String LOW_RES_BITMAP = "low res bitmap";
 
     public ControllerService() {
         super("gallery controller");

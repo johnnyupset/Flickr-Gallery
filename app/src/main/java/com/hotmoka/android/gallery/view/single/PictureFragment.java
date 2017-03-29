@@ -1,6 +1,11 @@
 package com.hotmoka.android.gallery.view.single;
 
+import android.content.Intent;
 import android.support.annotation.UiThread;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 
 import com.hotmoka.android.gallery.MVC;
@@ -13,6 +18,8 @@ import com.hotmoka.android.gallery.R;
  * reporting the title of the picture below it.
  */
 public class PictureFragment extends com.hotmoka.android.gallery.view.PictureFragment {
+
+    ShareActionProvider mShareActionProvider;
 
     /**
      * Convenience method to create a fragment that shows the picture
@@ -38,5 +45,25 @@ public class PictureFragment extends com.hotmoka.android.gallery.view.PictureFra
                     .setText(MVC.model.getTitles()[position]);
 
         return shown;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        // Inflate menu resource file.
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.picture_menu, menu);
+
+        // Locate MenuItem with ShareActionProvider
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
+        // Fetch and store ShareActionProvider
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+    }
+
+    // Call to update the share intent
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 }
