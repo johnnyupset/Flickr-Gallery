@@ -77,7 +77,7 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
         // ACTION_SEND indicates we want to send data across apps, AKA sharing an image
         mShareIntent.setAction(Intent.ACTION_SEND);
         mShareIntent.setType("image/*");
-        mShareIntent.putExtra(Intent.EXTRA_TEXT, mPictureUri);
+        mShareIntent.putExtra(Intent.EXTRA_STREAM, mPictureUri);
     }
 
     @Override
@@ -140,10 +140,10 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
             return false;
     }
 
-    public Uri getPictureUri(Context inContext, Bitmap inBitmap) {
+    public Uri getPictureUri(Context context, Bitmap bitmap) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String picturePath = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inBitmap, "", "");
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String picturePath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "", "");
         Log.d("PATH CHECK", "getPictureUri: " + picturePath);
         return Uri.parse(picturePath);
     }
