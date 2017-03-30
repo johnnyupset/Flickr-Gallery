@@ -35,8 +35,17 @@ class BitmapFetcher {
             MVC.controller.taskFinished();
         }
 
-        if (bitmap != null)
+        if(bitmap != null) {
             MVC.model.setBitmap(url, bitmap);
+        }
+
+        // TODO Think if there is a better solution for this check
+        if (bitmap != null) {
+            if (url.charAt(url.length() - 4) == 'z')
+                MVC.model.setBitmap(url, bitmap);
+            else if (url.charAt(url.length() - 4) == 'q')
+                MVC.model.setBitmapsLowRes(url, bitmap);
+        }
     }
 
     private byte[] getUrlBytes(String url) throws IOException {

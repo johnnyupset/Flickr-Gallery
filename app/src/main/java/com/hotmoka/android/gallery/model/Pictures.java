@@ -29,11 +29,19 @@ public class Pictures {
      */
     private String[] urls;
 
+    // TODO
+    private String[] urlsLowRes;
+
     /**
      * A map from each url to the downloaded bitmap.
      * It maps to null if the bitmap for a url has not been downloaded yet.
      */
     private final Map<String, Bitmap> bitmaps = new HashMap<>();
+
+    // TODO
+    private final Map<String, Bitmap> bitmapsLowRes = new HashMap<>();
+
+    //private List<Bitmap> lowResBitmaps;
 
     /**
      * Yields the titles of the pictures, if any.
@@ -60,6 +68,13 @@ public class Pictures {
             return bitmaps.get(urls[position]);
     }
 
+    @UiThread
+    public synchronized Bitmap getLowResBitmap(int position) {
+        if (urlsLowRes == null || position < 0 || position >= urlsLowRes.length)
+            return null;
+        else
+            return bitmapsLowRes.get(urlsLowRes[position]);
+    }
     /**
      * Yields the url from where it is possible to download the bitmap
      * corresponding to the title at the given position, if any.
@@ -71,6 +86,12 @@ public class Pictures {
     @UiThread
     public synchronized String getUrl(int position) {
         return urls != null && position >= 0 && position < urls.length ? urls[position] : null;
+    }
+
+    // TODO
+    @UiThread
+    public synchronized String getUrlLowRes(int position) {
+        return urlsLowRes != null && position >= 0 && position < urlsLowRes.length ? urlsLowRes[position] : null;
     }
 
     /**
@@ -91,20 +112,27 @@ public class Pictures {
     public void setPictures(Iterable<Picture> pictures) {
         List<String> titles = new ArrayList<>();
         List<String> urls = new ArrayList<>();
+        List<String> urlsLowRes = new ArrayList<>();
 
         for (Picture picture: pictures) {
             titles.add(picture.title);
             urls.add(picture.url);
+            // TODO Make it better and less hard coded
+            String newUrl = picture.url.substring(0, picture.url.length()-5)+"q.jpg";
+            urlsLowRes.add(newUrl);
         }
 
         String[] titlesAsArray = titles.toArray(new String[titles.size()]);
         String[] urlsAsArray = urls.toArray(new String[urls.size()]);
+        String[] urlsLowResAsArray = urlsLowRes.toArray(new String[urlsLowRes.size()]);
 
         // Synchronize for the shortest possible time
         synchronized (this) {
             this.titles = titlesAsArray;
             this.urls = urlsAsArray;
+            this.urlsLowRes = urlsLowResAsArray;
             this.bitmaps.clear();
+            this.bitmapsLowRes.clear();
         }
 
         // Tell all registered views that the list of pictures has changed
@@ -121,6 +149,17 @@ public class Pictures {
     public void setBitmap(String url, Bitmap bitmap) {
         synchronized (this) {
             this.bitmaps.put(url, bitmap);
+        }
+
+        // Tell all registered views that a bitmap changed
+        notifyViews(Event.BITMAP_CHANGED);
+    }
+
+    // TODO Is this really necessary?
+    @WorkerThread @UiThread
+    public void setBitmapsLowRes(String url, Bitmap bitmap) {
+        synchronized (this) {
+            this.bitmapsLowRes.put(url, bitmap);
         }
 
         // Tell all registered views that a bitmap changed

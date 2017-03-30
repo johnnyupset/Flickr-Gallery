@@ -37,9 +37,6 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
         // Show the titles, or the empty list if there is none yet
         String[] titles = MVC.model.getTitles();
 
-        //ThumbnailArrayAdapter adapter = new ThumbnailArrayAdapter(this.getActivity().getApplicationContext(), R.layout.list_single_item, titles);
-        //setListAdapter(adapter);
-
         setListAdapter(
                 new ThumbnailArrayAdapter(
                         this.getActivity(),
@@ -47,11 +44,6 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
                         titles == null ? new String[0] : titles
                 )
         );
-
-        /*setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_activated_1,
-                titles == null ? new String[0] : titles));
-        */
 
         // If no titles exist yet, ask the controller to reload them
         if (titles == null) {
@@ -92,7 +84,7 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
 
     @Override @UiThread
     public void onModelChanged(Pictures.Event event) {
-        if (event == PICTURES_LIST_CHANGED)
+        if (event == PICTURES_LIST_CHANGED) {
             // Show the new list of titles
             setListAdapter(
                     new ThumbnailArrayAdapter(
@@ -101,8 +93,8 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
                             MVC.model.getTitles()
                     )
             );
-            /*setListAdapter(new ArrayAdapter<>(getActivity(),
-                    android.R.layout.simple_list_item_activated_1,
-                    MVC.model.getTitles()));*/
+        }
     }
+
+
 }
