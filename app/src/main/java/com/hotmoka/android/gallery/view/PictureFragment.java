@@ -1,6 +1,7 @@
 package com.hotmoka.android.gallery.view;
 
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,10 +23,7 @@ import com.hotmoka.android.gallery.MVC;
 import com.hotmoka.android.gallery.R;
 import com.hotmoka.android.gallery.model.Pictures;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.logging.Logger;
+import java.io.OutputStream;
 
 /**
  * A fragment containing the picture currently shown in the
@@ -34,10 +32,11 @@ import java.util.logging.Logger;
 public abstract class PictureFragment extends Fragment implements GalleryFragment {
 
     private final static String ARG_POSITION = "position";
+    private final static int SHARE_REQUEST = 0;
 
-    Intent mShareIntent;
-    ShareActionProvider mShareActionProvider;
-    Uri mPictureUri;
+    private Intent shareIntent;
+    private MenuItem shareButton;
+    private Uri pictureUri;
 
     /**
      * This constructor is called when creating the view for the
@@ -68,16 +67,13 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
     @Override
     public void onStart() {
         super.onStart();
-        initializeShareIntent();
-        showPictureOrDownloadIfMissing();
     }
 
-    private void initializeShareIntent() {
-        mShareIntent = new Intent();
-        // ACTION_SEND indicates we want to send data across apps, AKA sharing an image
-        mShareIntent.setAction(Intent.ACTION_SEND);
-        mShareIntent.setType("image/*");
-        mShareIntent.putExtra(Intent.EXTRA_STREAM, mPictureUri);
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (pictureUri != null)
+            getActivity().getApplicationContext().getContentResolver().delete(pictureUri, null, null);
     }
 
     @Override
@@ -87,14 +83,50 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
         inflater.inflate(R.menu.picture_menu, menu);
 
         // Find the MenuItem that we know has the ShareActionProvider
-        MenuItem item = menu.findItem(R.id.menu_item_share);
+        shareButton = menu.findItem(R.id.menu_item_share);
 
-        // Get its ShareActionProvider
-        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+        shareButton.setVisible(false);
 
-        // Connect the dots: give the ShareActionProvider its Share Intent
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(mShareIntent);
+        showPictureOrDownloadIfMissing();
+    }
+
+    /**
+     * Initialize the intent used for sharing images between
+     * activities of different applications and set the listener
+     * for the sharing menu item
+     */
+    private void initializeShareIntent(Bitmap bitmap) {
+        shareButton.setVisible(true);
+
+        shareButton.setOnMenuItemClickListener(menuItem -> {
+            pictureUri = getPictureUri(bitmap);
+
+            shareIntent = new Intent();
+            shareIntent.setType("image/*");
+            shareIntent.setAction(Intent.ACTION_SEND);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, pictureUri);
+
+            startActivityForResult(Intent.createChooser(shareIntent, "Share your picture with"), SHARE_REQUEST);
+            return true;
+        });
+    }
+
+    /**
+     * Save the bitmap in the sd local storage and return its uri
+     */
+    public Uri getPictureUri(Bitmap bitmap) {
+        String picturePath = MediaStore.Images.Media.insertImage(getActivity().getApplicationContext().getContentResolver(), bitmap, "", "");
+        Uri pictureUri = Uri.parse(picturePath);
+        return pictureUri;
+    }
+
+    /**
+     * Delete the image temporary saved in the local storage after sharing
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == SHARE_REQUEST) {
+            getActivity().getApplicationContext().getContentResolver().delete(pictureUri, null, null);
         }
     }
 
@@ -116,7 +148,7 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
         String url;
         if (!showBitmapIfDownloaded(position) && (url = MVC.model.getUrl(position)) != null) {
             ((GalleryActivity) getActivity()).showProgressIndicator();
-            MVC.controller.onPictureRequired(getActivity(), url);
+            MVC.controller.onPictureRequired(getActivity(), url, false);
         }
     }
 
@@ -131,21 +163,13 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
     protected boolean showBitmapIfDownloaded(int position) {
         Bitmap bitmap = MVC.model.getBitmap(position);
         if (bitmap != null) {
-            mPictureUri = getPictureUri(getActivity().getApplicationContext(), bitmap);
-            Log.d("URI CHECK", "showBitmapIfDownloaded: " + mPictureUri);
+            // The bitmap has been downloaded: set its sharing intent and display it
+            initializeShareIntent(bitmap);
             ((ImageView) getView().findViewById(R.id.picture)).setImageBitmap(bitmap);
             return true;
         }
         else
             return false;
-    }
-
-    public Uri getPictureUri(Context context, Bitmap bitmap) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String picturePath = MediaStore.Images.Media.insertImage(context.getContentResolver(), bitmap, "", "");
-        Log.d("PATH CHECK", "getPictureUri: " + picturePath);
-        return Uri.parse(picturePath);
     }
 
     @UiThread

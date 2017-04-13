@@ -19,8 +19,6 @@ import com.hotmoka.android.gallery.R;
  */
 public class PictureFragment extends com.hotmoka.android.gallery.view.PictureFragment {
 
-    ShareActionProvider mShareActionProvider;
-
     /**
      * Convenience method to create a fragment that shows the picture
      * for the title corresponding to the given position.

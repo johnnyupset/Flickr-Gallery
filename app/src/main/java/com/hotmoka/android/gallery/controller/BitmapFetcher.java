@@ -20,7 +20,7 @@ class BitmapFetcher {
     private final static String TAG = BitmapFetcher.class.getSimpleName();
 
     @WorkerThread
-    BitmapFetcher(String url) {
+    BitmapFetcher(String url, boolean isLowResolution) {
         Bitmap bitmap = null;
 
         try {
@@ -35,16 +35,13 @@ class BitmapFetcher {
             MVC.controller.taskFinished();
         }
 
-        if(bitmap != null) {
-            MVC.model.setBitmap(url, bitmap);
-        }
-
         // TODO Think if there is a better solution for this check
         if (bitmap != null) {
-            if (url.charAt(url.length() - 4) == 'z')
-                MVC.model.setBitmap(url, bitmap);
-            else if (url.charAt(url.length() - 4) == 'q')
+            if (isLowResolution)
                 MVC.model.setBitmapsLowRes(url, bitmap);
+            else
+                MVC.model.setBitmap(url, bitmap);
+
         }
     }
 

@@ -99,7 +99,8 @@ public class Pictures {
      */
     public enum Event {
         PICTURES_LIST_CHANGED,
-        BITMAP_CHANGED
+        BITMAP_CHANGED,
+        BITMAP_LOWRES_CHANGED
     }
 
     /**
@@ -117,9 +118,8 @@ public class Pictures {
         for (Picture picture: pictures) {
             titles.add(picture.title);
             urls.add(picture.url);
-            // TODO Make it better and less hard coded
-            String newUrl = picture.url.substring(0, picture.url.length()-5)+"q.jpg";
-            urlsLowRes.add(newUrl);
+            // low res urls
+            urlsLowRes.add(picture.lowResUrl);
         }
 
         String[] titlesAsArray = titles.toArray(new String[titles.size()]);
@@ -163,7 +163,7 @@ public class Pictures {
         }
 
         // Tell all registered views that a bitmap changed
-        notifyViews(Event.BITMAP_CHANGED);
+        notifyViews(Event.BITMAP_LOWRES_CHANGED);
     }
 
     /**

@@ -21,6 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.hotmoka.android.gallery.model.Pictures.Event.BITMAP_CHANGED;
+import static com.hotmoka.android.gallery.model.Pictures.Event.BITMAP_LOWRES_CHANGED;
 import static com.hotmoka.android.gallery.model.Pictures.Event.PICTURES_LIST_CHANGED;
 
 /**
@@ -93,6 +95,9 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
                             MVC.model.getTitles()
                     )
             );
+        }
+        if (event == BITMAP_LOWRES_CHANGED) {
+            ((ArrayAdapter) getListAdapter()).notifyDataSetChanged();
         }
     }
 

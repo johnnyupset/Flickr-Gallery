@@ -3,7 +3,6 @@ package com.hotmoka.android.gallery.view;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.UiThread;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,25 +34,23 @@ public class ThumbnailArrayAdapter extends ArrayAdapter {
         ImageView pictureThumbnail = (ImageView) rowView.findViewById(R.id.gallery_thumbnail);
 
         pictureTitle.setText(titles[position]);
-        //Log.d("TITLES", "getView: " + titles[position]);
-        //pictureThumbnail.setImageBitmap(MVC.model.getBitmap(position));
-        // TODO check why images do not load if you don't scroll down
-        showPictureOrDownloadIfMissing(position, pictureThumbnail);
 
+        showPictureOrDownloadIfMissing(position, pictureThumbnail);
         return rowView;
     }
 
     @UiThread
     protected void showPictureOrDownloadIfMissing(int position, ImageView pictureThumbnail) {
         String url;
-        if (!showBitmapIfDownloaded(position, pictureThumbnail) && (url = MVC.model.getUrl(position)) != null) {
-            MVC.controller.onPictureRequired(this.getContext(), url);
+        if (!showBitmapIfDownloaded(position, pictureThumbnail) && (url = MVC.model.getUrlLowRes(position)) != null) {
+            // Start the download of the required picture
+            MVC.controller.onPictureRequired(this.getContext(), url, true);
         }
     }
 
     @UiThread
     protected boolean showBitmapIfDownloaded(int position, ImageView pictureThumbnail) {
-        Bitmap bitmap = MVC.model.getBitmap(position);
+        Bitmap bitmap = MVC.model.getLowResBitmap(position);
         if (bitmap != null) {
             pictureThumbnail.setImageBitmap(bitmap);
             return true;
