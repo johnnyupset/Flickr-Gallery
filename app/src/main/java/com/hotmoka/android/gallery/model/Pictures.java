@@ -100,6 +100,7 @@ public class Pictures {
     public enum Event {
         PICTURES_LIST_CHANGED,
         BITMAP_CHANGED,
+        // NEW!!
         BITMAP_LOWRES_CHANGED
     }
 
@@ -118,7 +119,7 @@ public class Pictures {
         for (Picture picture: pictures) {
             titles.add(picture.title);
             urls.add(picture.url);
-            // low res urls
+            // NEW!! Model stores low res urls
             urlsLowRes.add(picture.lowResUrl);
         }
 
@@ -155,7 +156,7 @@ public class Pictures {
         notifyViews(Event.BITMAP_CHANGED);
     }
 
-    // TODO Is this really necessary?
+    // NEW!! Sets the bitmap corresponding to the given low res url
     @WorkerThread @UiThread
     public void setBitmapsLowRes(String url, Bitmap bitmap) {
         synchronized (this) {

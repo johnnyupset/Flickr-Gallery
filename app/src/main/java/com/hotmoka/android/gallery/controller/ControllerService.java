@@ -18,6 +18,7 @@ public class ControllerService extends IntentService {
     private final static String PARAM_API_KEY = "API key";
     private final static String ACTION_FETCH_BITMAP = "fetch bitmap";
     private final static String PARAM_URL = "url";
+    // NEW!!! Parameter for intent Bitmap Fetcher
     private final static String LOW_RESOLUTION = "resolution";
 
     public ControllerService() {
@@ -48,6 +49,7 @@ public class ControllerService extends IntentService {
         Intent intent = new Intent(context, ControllerService.class);
         intent.setAction(ACTION_FETCH_BITMAP);
         intent.putExtra(PARAM_URL, url);
+        // NEW!! Added boolean extra to check if the bitmap is lowres
         intent.putExtra(LOW_RESOLUTION, isLowResolution);
         context.startService(intent);
     }
@@ -66,6 +68,7 @@ public class ControllerService extends IntentService {
                         intent.getStringExtra(PARAM_API_KEY));
                 break;
             case ACTION_FETCH_BITMAP:
+                // NEW!! Added boolean extra to check if the bitmap is lowres
                 new BitmapFetcher(intent.getStringExtra(PARAM_URL), intent.getExtras().getBoolean(LOW_RESOLUTION));
                 break;
         }

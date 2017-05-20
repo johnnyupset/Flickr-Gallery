@@ -32,8 +32,9 @@ import java.io.OutputStream;
 public abstract class PictureFragment extends Fragment implements GalleryFragment {
 
     private final static String ARG_POSITION = "position";
-    private final static int SHARE_REQUEST = 0;
 
+    // NEW!! Members data needed for share feature
+    private final static int SHARE_REQUEST = 0;
     private Intent shareIntent;
     private MenuItem shareButton;
     private Uri pictureUri;
@@ -69,24 +70,23 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
         super.onStart();
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (pictureUri != null)
-            getActivity().getApplicationContext().getContentResolver().delete(pictureUri, null, null);
-    }
-
+    /**
+     * Create the OptionsMenu with the share button
+     */
+    // NEW!!
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+        // Inflate the menu; this adds items to the action bar if it is present
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.picture_menu, menu);
 
-        // Find the MenuItem that we know has the ShareActionProvider
+        // Find the MenuItem button used for sharing
         shareButton = menu.findItem(R.id.menu_item_share);
 
+        // Visibility on false so that on tablets it's visible only when the user click on at least one link
         shareButton.setVisible(false);
 
+        // Visualize picture
         showPictureOrDownloadIfMissing();
     }
 
@@ -95,6 +95,7 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
      * activities of different applications and set the listener
      * for the sharing menu item
      */
+    // NEW!!
     private void initializeShareIntent(Bitmap bitmap) {
         shareButton.setVisible(true);
 
@@ -114,6 +115,7 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
     /**
      * Save the bitmap in the sd local storage and return its uri
      */
+    // NEW!!
     public Uri getPictureUri(Bitmap bitmap) {
         String picturePath = MediaStore.Images.Media.insertImage(getActivity().getApplicationContext().getContentResolver(), bitmap, "", "");
         Uri pictureUri = Uri.parse(picturePath);
@@ -123,6 +125,7 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
     /**
      * Delete the image temporary saved in the local storage after sharing
      */
+    // NEW!!
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == SHARE_REQUEST) {
@@ -163,7 +166,7 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
     protected boolean showBitmapIfDownloaded(int position) {
         Bitmap bitmap = MVC.model.getBitmap(position);
         if (bitmap != null) {
-            // The bitmap has been downloaded: set its sharing intent and display it
+            // NEW!! The bitmap has been downloaded: set its sharing intent and display it
             initializeShareIntent(bitmap);
             ((ImageView) getView().findViewById(R.id.picture)).setImageBitmap(bitmap);
             return true;

@@ -35,7 +35,8 @@ class BitmapFetcher {
             MVC.controller.taskFinished();
         }
 
-        // TODO Think if there is a better solution for this check
+        // NEW CODE!!
+        // If the bitmap is low resolution (thumbnail) save it with the respective url
         if (bitmap != null) {
             if (isLowResolution)
                 MVC.model.setBitmapsLowRes(url, bitmap);

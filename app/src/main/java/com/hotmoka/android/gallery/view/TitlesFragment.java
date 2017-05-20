@@ -39,6 +39,7 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
         // Show the titles, or the empty list if there is none yet
         String[] titles = MVC.model.getTitles();
 
+        // NEW!! Use the new array adapter for the list with thumbnails
         setListAdapter(
                 new ThumbnailArrayAdapter(
                         this.getActivity(),
@@ -97,6 +98,7 @@ public abstract class TitlesFragment extends ListFragment implements GalleryFrag
             );
         }
         if (event == BITMAP_LOWRES_CHANGED) {
+            // NEW!! Event received from Pictures (Model): bitmap thumbnail is ready to be displayed -> refresh the list
             ((ArrayAdapter) getListAdapter()).notifyDataSetChanged();
         }
     }
