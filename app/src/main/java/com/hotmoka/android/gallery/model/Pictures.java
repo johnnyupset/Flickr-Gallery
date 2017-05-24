@@ -29,7 +29,7 @@ public class Pictures {
      */
     private String[] urls;
 
-    // TODO
+    // NEW!! Urls from where low res bitmaps (thumbnails) can be downloaded
     private String[] urlsLowRes;
 
     /**
@@ -38,10 +38,8 @@ public class Pictures {
      */
     private final Map<String, Bitmap> bitmaps = new HashMap<>();
 
-    // TODO
+    // NEW!! A map from each url to the downloaded low res bitmap
     private final Map<String, Bitmap> bitmapsLowRes = new HashMap<>();
-
-    //private List<Bitmap> lowResBitmaps;
 
     /**
      * Yields the titles of the pictures, if any.
@@ -68,6 +66,7 @@ public class Pictures {
             return bitmaps.get(urls[position]);
     }
 
+    // NEW!! Same as above but for low resolution bitmaps
     @UiThread
     public synchronized Bitmap getLowResBitmap(int position) {
         if (urlsLowRes == null || position < 0 || position >= urlsLowRes.length)
@@ -88,7 +87,7 @@ public class Pictures {
         return urls != null && position >= 0 && position < urls.length ? urls[position] : null;
     }
 
-    // TODO
+    // NEW!! Same as above but for low resolution urls
     @UiThread
     public synchronized String getUrlLowRes(int position) {
         return urlsLowRes != null && position >= 0 && position < urlsLowRes.length ? urlsLowRes[position] : null;
@@ -156,7 +155,7 @@ public class Pictures {
         notifyViews(Event.BITMAP_CHANGED);
     }
 
-    // NEW!! Sets the bitmap corresponding to the given low res url
+    // NEW!! Same as above: sets the bitmap corresponding to the given low res url
     @WorkerThread @UiThread
     public void setBitmapsLowRes(String url, Bitmap bitmap) {
         synchronized (this) {
