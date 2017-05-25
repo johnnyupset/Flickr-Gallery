@@ -188,6 +188,8 @@ public abstract class PictureFragment extends Fragment implements GalleryFragmen
                 ((ImageView) getView().findViewById(R.id.picture)).setImageBitmap(null);
                 // Take note that no picture is currently selected
                 getArguments().putInt(ARG_POSITION, -1);
+                // NEW!! On tablet hide the share button if the titles have changed/updated
+                shareButton.setVisible(false);
                 break;
         }
     }
